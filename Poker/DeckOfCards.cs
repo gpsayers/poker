@@ -7,7 +7,7 @@ namespace Poker
 {
     public class DeckOfCards
     {
-        public int[] GetNewDeck()
+        public static List<int> GetNewDeck()
         {
             var list = new List<int>();
 
@@ -19,7 +19,7 @@ namespace Poker
             var array = list.ToArray();
 
 
-            return FisherYatesShuffle(array);
+            return FisherYatesShuffle(array).ToList();
 
         }
 

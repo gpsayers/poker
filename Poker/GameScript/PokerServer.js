@@ -57,3 +57,15 @@ function playerSit() {
         pokerHub.server.playerSit();
     });
 }
+
+function playerStand() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.playerStand();
+    });
+}
+
+function dealCards() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.deal();
+    });
+}

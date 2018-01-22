@@ -10,7 +10,74 @@ namespace Poker
     public class PokerServer : Hub
     {
         static private List<Player> playerList = new List<Player>();
-        static private GameVariables gameVars = new GameVariables(); 
+        static private GameVariables gameVars = new GameVariables();
+
+        public void deal()
+        {
+            if (gameVars.handInProgress)
+            {
+                //Cancel hand already in progress
+                return;
+            }
+
+            gameVars.handInProgress = true;
+
+
+            var playersInHand = playerList.Where(x => x.tableSeat > 0);
+
+
+            if (!playersInHand.Any())
+            {
+                //No players cancel hand
+                return;
+            }
+
+            var currentDealer = playersInHand.Where(x => x.connectionId == gameVars.dealer);
+
+            if (currentDealer.Any())
+            {
+                var index = playersInHand.ToList().IndexOf(currentDealer.FirstOrDefault());
+                if (index++ > playersInHand.Count() - 1)
+                {
+                    gameVars.dealer = playersInHand.ToList()[0].connectionId;
+                }
+                
+            }
+            else
+            {
+                gameVars.dealer = playersInHand.ToList()[0].connectionId;
+            }
+
+            gameVars.currentPlayers = playersInHand.Select(x => x.connectionId).ToList();
+
+            //Get new shuffled deck of cards
+            gameVars.deck = DeckOfCards.GetNewDeck();
+
+            //burn one card
+            gameVars.deck.RemoveAt(0);
+
+            foreach (var player in playersInHand)
+            {
+                player.cards.Add(gameVars.deck[0]);
+                gameVars.deck.RemoveAt(0);
+                player.cards.Add(gameVars.deck[0]);
+                gameVars.deck.RemoveAt(0);
+            }
+
+            gameVars.cardsInPlay.Add(gameVars.deck[0]);
+            gameVars.deck.RemoveAt(0);
+            gameVars.cardsInPlay.Add(gameVars.deck[0]);
+            gameVars.deck.RemoveAt(0);
+            gameVars.cardsInPlay.Add(gameVars.deck[0]);
+            gameVars.deck.RemoveAt(0);
+
+            gameVars.handInProgress = false;
+        }
+
+        public void getHand()
+        {
+            
+        }
 
         public void AddPlayer(string name)
         {
@@ -95,6 +162,11 @@ namespace Poker
 
     public class Player
     {
+        public Player()
+        {
+            cards = new List<int>();
+        }
+
         public string id { get; set; }
         public string name { get; set; }
         public List<int> cards { get; set; }
@@ -103,17 +175,26 @@ namespace Poker
         public int money { get; set; }
         public int ip { get; set; }
         public bool ready { get; set; }
+
     }
 
     public class GameVariables
     {
+        public GameVariables()
+        {
+            cardsInPlay = new List<int>();
+            currentPlayers = new List<string>();
+        }
+
         public List<int> cardsInPlay { get; set; }
         public List<string> currentPlayers { get; set; }
         public int currentPot { get; set; }
         public string dealer { get; set; }
         public bool gameReady { get; set; }
-        public int[] deck { get; set; }
-        public bool newGame { get; set; }
+        public List<int> deck { get; set; }
+        public bool handInProgress { get; set; }
+
+
     }
 
     

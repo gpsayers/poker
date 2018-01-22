@@ -86,7 +86,7 @@ canvas.addEventListener('mouseup', function (event) {
     if (mousePos.x > 280 && mousePos.x < 440 && mousePos.y > 420 && mousePos.y < 460) {
         if (seatsList.length < 2) {
             playerSit();
-            console.log(seatsList);
+            getSeats();
         }
     }
 
@@ -123,8 +123,6 @@ function gameLoop() {
 
         if ((cycles % 60) == 0) {
             getSeats();
-            console.log(seatsList);
-            console.log(seatsList.indexOf(currentPlayer));
         }
 
     }
@@ -133,7 +131,7 @@ function gameLoop() {
 
 function loadPokerTable() {
     imgDeck = new Image();
-    imgDeck.src = "Images/playingCards/back.png";
+    imgDeck.src = "Images/playingCards/back.jpg";
     imgDeck.onload = function () {
         context.drawImage(imgDeck, 25, 209,100, 144);
     }
@@ -162,12 +160,14 @@ function updatePokerTable() {
     context.rect(10, 10, 705, 174);
     context.rect(10, 194, 705, 174);
     context.rect(10, 378, 705, 174);
-    context.rect(25, 209, 100, 144);
+    //context.rect(25, 209, 100, 144);
     context.stroke();
     context.closePath();
 
 
     context.drawImage(imgDeck, 25, 209, 100, 144);
+    context.drawImage(imgDeck, 23, 207, 100, 144);
+    context.drawImage(imgDeck, 21, 205, 100, 144);
 
 
     var playerString = "";
