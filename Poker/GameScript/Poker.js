@@ -123,6 +123,8 @@ function gameLoop() {
 
         if ((cycles % 60) == 0) {
             getSeats();
+            console.log(seatsList);
+            console.log(seatsList.indexOf(currentPlayer));
         }
 
     }
@@ -135,6 +137,14 @@ function loadPokerTable() {
     imgDeck.onload = function () {
         context.drawImage(imgDeck, 25, 209,100, 144);
     }
+
+    $("#ready").hide();
+    $("#bet").hide();
+    $("#fold").hide();
+    $("#check").hide();
+    $("#reveal").hide();
+    $("#stand").hide();
+
 }
 
 
@@ -170,7 +180,7 @@ function updatePokerTable() {
 
     $("#currentPlayers").html(playerString);
 
-    if (seatsList.length < 2 || seatsList.indexOf(currentPlayer) == 0) {
+    if (seatsList.length < 2 && seatsList.indexOf(currentPlayer) == -1) {
 
         context.beginPath();
         context.fillStyle = "black";
@@ -249,8 +259,16 @@ function displayPlayerArea() {
     context.fillStyle = "black";
     context.font = "30px Arial";
     context.fillText(currentPlayer, 600, 410);
-
     context.closePath();
+
+    $("#ready").show();
+    $("#bet").show();
+    $("#fold").show();
+    $("#check").show();
+    $("#reveal").show();
+    $("#stand").show();
+
+
 }
 
 loadPokerTable();
