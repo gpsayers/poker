@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Poker by Garth</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Styles/playingCards.css" rel="stylesheet" />
+    <style>
+        .chat {
+            padding: 5px;
+        }
+        .lobby {
+            height: 162px;
+            /*background-color: #99CCFF;*/
+            border: thick solid #808080;
+            overflow: auto;
+        }
+        .dicussion {
+            /*background-color: #99CCFF;*/
+            border: thick solid #808080;
+            height: 350px;
+            overflow: auto;
+        }
+        .message {
+            /*background-color: #99CCFF;*/
+            border: thick solid #808080;
+            height: 50px;
+            width: 100%;
+
+        }
+    </style>
+</head>
+<body>
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/bootbox.min.js"></script>
+
+    <div class="container" style="margin-top: 20px;">
+        <div class="row">
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12 lobby">
+                        Lobby:
+                        <div id="currentPlayers">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 dicussion" id="scroll">
+                        <ul id="discussion"></ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 message">
+                        <div class="chat">
+                            <input type="text" id="message" />
+                            <input type="button" id="send" value="Send" />
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col-8">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input type="button" id="test" value="test" />
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+    <script src="GameScript/Poker.js"></script>
+
+    <script src="Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="signalr/hubs"></script>
+    <script src="GameScript/PokerServer.js"></script>
+    <script type="text/javascript">
+
+        function mymodal() {
+            bootbox.prompt({
+                title: "What is your name?",
+                message: "name",
+                prompt: "",
+                closeButton: false,
+                buttons: {
+                    confirm: {
+                        label: "Ok",
+                    }
+                },
+                callback: function (result) {
+                    if (result == null) {
+                        mymodal();
+                    }
+                    else {
+                        currentPlayer = result;
+                        addPlayer(result);
+                    }
+                }
+            });
+        }
+
+        mymodal();
+    </script>
+
+
+</body>
+</html>
