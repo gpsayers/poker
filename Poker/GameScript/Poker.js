@@ -100,7 +100,7 @@ function getMousePos(canvas, evt) {
     };
 }
 
-var fps = 20,
+var fps = 60,
     interval = 1000 / fps,
     lastTime = (new Date()).getTime(),
     currentTime = 0,
@@ -121,7 +121,7 @@ function gameLoop() {
 
         updatePokerTable();
 
-        if ((cycles % 20) == 0) {
+        if ((cycles % 60) == 0) {
             getSeats();
         }
 
@@ -129,50 +129,58 @@ function gameLoop() {
 
 }
 
+function loadPokerTable() {
+    imgDeck = new Image();
+    imgDeck.src = "Images/playingCards/back.png";
+    imgDeck.onload = function () {
+        context.drawImage(imgDeck, 25, 209,100, 144);
+    }
+}
 
 
-function buildPokerTable() {
+
+function updatePokerTable() {
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(280, 420, 160, 40);
+
     context.fillStyle = "#45a173";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
+    context.beginPath();
     context.rect(1, 1, 723, 560);
     context.rect(10, 10, 705, 174);
     context.rect(10, 194, 705, 174);
     context.rect(10, 378, 705, 174);
     context.rect(25, 209, 100, 144);
     context.stroke();
+    context.closePath();
 
 
-}
+    context.drawImage(imgDeck, 25, 209, 100, 144);
 
-function updatePokerTable() {
-    imgDeck = new Image();
-    imgDeck.src = "Images/playingCards/back.png";
-    imgDeck.onload = function () {
-        context.drawImage(imgDeck, 25, 209, 100, 144);
-    }
 
     var playerString = "";
 
-    $.each(playerList, function (index, item) {
-        playerString += item;
-        playerString += "<br/>";
-    })
+    $.each(playerList,
+        function(index, item) {
+            playerString += item;
+            playerString += "<br/>";
+        });
 
     $("#currentPlayers").html(playerString);
 
-    if (seatsList.length < 2) {
+    if (seatsList.length < 2 || seatsList.indexOf(currentPlayer) == 0) {
 
+        context.beginPath();
         context.fillStyle = "black";
         context.font = "30px Arial";
         context.fillText("Sit at table", 290, 450);
         context.rect(280, 420, 160, 40);
         context.stroke();
-
+        context.closePath();
     } else {
-        context.clearRect(275, 415, 170, 50);
-        context.fillStyle = "#45a173";
-        context.fillRect(275, 415, 170, );
+        displayPlayerArea();
     }
 
 }
@@ -236,7 +244,14 @@ function dealHand() {
     }
 }
 
-//buildPokerTable();
-//dealHand();
-buildPokerTable();
+function displayPlayerArea() {
+    context.beginPath();
+    context.fillStyle = "black";
+    context.font = "30px Arial";
+    context.fillText(currentPlayer, 600, 410);
+
+    context.closePath();
+}
+
+loadPokerTable();
 gameLoop();

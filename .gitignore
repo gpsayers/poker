@@ -45,3 +45,59 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# use glob syntax
+syntax: glob
+
+*.obj
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.lib
+*.sbr
+*.scc
+*.DotSettings
+[Bb]in
+[Dd]ebug*/**
+[Oo]bj*/**
+[Rr]elease*/**
+_ReSharper*/**
+NDependOut/**
+packages/**
+[Tt]humbs.db
+[Tt]est[Rr]esult*
+[Bb]uild[Ll]og.*
+*.[Pp]ublish.xml
+*.resharper
+*.ncrunch*
+*.ndproj
+DBI_WebApplication/DBI_WebApplication/Help/*
+*.orig
+obj
+bin
+/DBI_WebApplication/.vs/config/applicationhost.config
+/DBI_WebApplication/.vs/config/applicationhost.config.rej
+*.msi
+/DBI_WebApplication/DBI.Queueing.AEP.MessageBlast.Service.Installer/Release
+/DBI_WebApplication/DBI.Queueing.AEP.MessageBlast.Service.Installer/Debug
+DBI_WebApplication/packages/Microsoft.Bcl.Build.1.0.21/build/Microsoft.Bcl.Build.Tasks.dll
+/visual studio 2015Templates
+DBI_WebApplication/packages/*
+DBI_WebApplication/DBI.LEAP.Instance.1.0.0.nupkg
+DBI_WebApplication/DBI.LEAP.Instance.1.0.1.nupkg
+DBI_WebApplication/DBI.LEAP.Instance.1.0.2.nupkg
+.vs
+

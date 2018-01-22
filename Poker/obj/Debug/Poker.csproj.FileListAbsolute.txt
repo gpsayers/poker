@@ -21,3 +21,26 @@ c:\users\sayers family\source\repos\Poker\Poker\bin\Microsoft.Owin.Host.SystemWe
 c:\users\sayers family\source\repos\Poker\Poker\bin\Microsoft.Owin.Security.xml
 c:\users\sayers family\source\repos\Poker\Poker\bin\Newtonsoft.Json.xml
 c:\users\sayers family\source\repos\Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Projects\poker\Poker\bin\Poker.dll.config
+C:\Projects\poker\Poker\bin\Poker.dll
+C:\Projects\poker\Poker\bin\Poker.pdb
+C:\Projects\poker\Poker\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Projects\poker\Poker\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Projects\poker\Poker\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Projects\poker\Poker\bin\Microsoft.Owin.dll
+C:\Projects\poker\Poker\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Projects\poker\Poker\bin\Microsoft.Owin.Security.dll
+C:\Projects\poker\Poker\bin\Microsoft.Web.Infrastructure.dll
+C:\Projects\poker\Poker\bin\Newtonsoft.Json.dll
+C:\Projects\poker\Poker\bin\Owin.dll
+C:\Projects\poker\Poker\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Projects\poker\Poker\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Projects\poker\Poker\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Projects\poker\Poker\bin\Microsoft.Owin.xml
+C:\Projects\poker\Poker\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Projects\poker\Poker\bin\Microsoft.Owin.Security.xml
+C:\Projects\poker\Poker\bin\Newtonsoft.Json.xml
+C:\Projects\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Projects\poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
+C:\Projects\poker\Poker\obj\Debug\Poker.dll
+C:\Projects\poker\Poker\obj\Debug\Poker.pdb
