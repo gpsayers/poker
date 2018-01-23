@@ -79,7 +79,7 @@ var playerList,
     showhand = false,
     showflop = false,
     showopp = false,
-    reveal = false
+    handPhase = ""
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -132,8 +132,19 @@ function gameLoop() {
 
         updatePokerTable();
 
+        if (handPhase == 0) {
+            flopCardArray.length = 0;
+            handCardArray.length = 0;
+            oppCardsArray.length = 0;
+            showhand = false;
+            showflop = false;
+            showopp = false;
+        }
+
         if ((cycles % 60) == 0) {
             getSeats();
+            showOpp();
+            getPhase();
         }
 
     }
@@ -352,7 +363,7 @@ function displayOpponentArea() {
     context.closePath();
 
 
-    if (showopp == true) {
+    if (showopp == true && handPhase > 0) {
         context.drawImage(imgOppCard1, 25, 25, 100, 144);
         context.drawImage(imgOppCard2, 140, 25, 100, 144);
     }

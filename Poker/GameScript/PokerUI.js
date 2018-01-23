@@ -6,18 +6,18 @@
 //temporary button
 $("#deal").click(function () {
     dealCards();
+    getPhase();
 
 });
 
 //temporary button
 $("#flop").click(function () {
     dealFlop();
-
+    getPhase();    
 });
 
 $("#reveal").click(function () {
-    var reveal = !reveal;
 
-    revealHand(reveal);
+    revealHand(true);
 
 });

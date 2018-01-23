@@ -54,6 +54,8 @@ namespace Poker
 
             foreach (var player in playersInHand)
             {
+                player.cardsRevealed = false;
+
                 player.cards.Add(gameVars.deck[0]);
                 gameVars.deck.RemoveAt(0);
                 player.cards.Add(gameVars.deck[0]);
@@ -66,6 +68,8 @@ namespace Poker
             gameVars.deck.RemoveAt(0);
             gameVars.cardsInPlay.Add(gameVars.deck[0]);
             gameVars.deck.RemoveAt(0);
+
+            gameVars.handPhase = HandPhase.Deal;
 
 
             //Clean up
@@ -89,6 +93,7 @@ namespace Poker
 
         public void getFlop()
         {
+            gameVars.handPhase = HandPhase.Flop;
 
              Clients.All.clientFlop(gameVars.cardsInPlay);
 
@@ -102,11 +107,11 @@ namespace Poker
             {
                 if (!query.FirstOrDefault().cardsRevealed)
                 {
-                    Clients.All.oppCards(new int[] { 99, 99 });
+                    Clients.Caller.oppCards(new int[] { 99, 99 });
                 }
                 else
                 {
-                    Clients.All.oppCards(query.FirstOrDefault().cards);
+                    Clients.Caller.oppCards(query.FirstOrDefault().cards);
                 }
             }
         }
@@ -158,7 +163,6 @@ namespace Poker
             {
                 query.FirstOrDefault().cardsRevealed = reveal;
 
-                showOpp();
             }
         }
 
@@ -193,6 +197,11 @@ namespace Poker
 
         public void PlayerStand()
         {
+            //TODO: Take care of a player leaving in the game
+            gameVars.handPhase = HandPhase.PreGame;
+            gameVars.handInProgress = false;
+            gameVars.cardsInPlay = new List<int>();
+
             var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
 
             if (query.Any())
@@ -216,6 +225,9 @@ namespace Poker
                 if (playerQuery.FirstOrDefault().tableSeat > 0)
                 {
                     //TODO: Take care of a player leaving in the game
+                    gameVars.handPhase = HandPhase.PreGame;
+                    gameVars.handInProgress = false;
+                    gameVars.cardsInPlay = new List<int>();
                 }
                 
                 Clients.All.clientMessage(playerQuery.FirstOrDefault().name + " has left.");
@@ -270,6 +282,7 @@ namespace Poker
 
     public enum HandPhase
     {
+        PreGame = 0,
         Deal = 1,
         FirstBet = 2,
         Flop = 3,

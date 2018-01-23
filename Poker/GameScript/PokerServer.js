@@ -25,13 +25,19 @@ pokerHub.client.clientFlop = function (cards) {
 }
 
 pokerHub.client.oppCards = function (cards) {
-    console.log("opp cards: " + cards)
     oppCardsArray = cards;
     loadOpps();
 }
 
 pokerHub.client.dealAll = function () {
+    flopCardArray.length = 0;
+    showflop = false;
     getHand();
+}
+
+pokerHub.client.clientPhase = function (phase) {
+    handPhase = phase;
+    
 }
 
 pokerHub.client.chatMessage = function (chatMessage, name) {
@@ -113,4 +119,10 @@ function revealHand(value) {
         pokerHub.server.revealHand(value);
     });
 
+}
+
+function getPhase() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getPhase();
+    });
 }
