@@ -14,6 +14,26 @@ pokerHub.client.clientSeats = function (seats) {
     seatsList = seats;
 }
 
+pokerHub.client.clientHand = function (cards) {
+    handCardArray = cards;
+    loadHand();
+}
+
+pokerHub.client.clientFlop = function (cards) {
+    flopCardArray = cards;
+    loadFlop();
+}
+
+pokerHub.client.oppCards = function (cards) {
+    console.log("opp cards: " + cards)
+    oppCardsArray = cards;
+    loadOpps();
+}
+
+pokerHub.client.dealAll = function () {
+    getHand();
+}
+
 pokerHub.client.chatMessage = function (chatMessage, name) {
     var encodedName = $('<div />').text(name).html();
     var encodedMsg = $('<div />').text(chatMessage).html();
@@ -68,4 +88,29 @@ function dealCards() {
     $.connection.hub.start().done(function () {
         pokerHub.server.deal();
     });
+}
+
+function getHand() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getHand();
+    });
+}
+
+function dealFlop() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getFlop();
+    });
+}
+
+function showOpp() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.showOpp();
+    });
+}
+
+function revealHand(value) {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.revealHand(value);
+    });
+
 }

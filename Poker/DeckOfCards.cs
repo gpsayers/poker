@@ -47,10 +47,45 @@ namespace Poker
             return retVal;
         }
 
+        
+
 
     }
 
+    public class Card
+    {
+        public Card(int _id, int _rank, string _suite)
+        {
+            id = _id;
+            rank = _rank;
+            suite = _suite;
+        }
 
+        public int id { get; set; }
+        public int rank { get; set; }
+        public string suite { get; set; }
+    }
+
+    class Deck
+    {
+        public Card[] cards;
+
+        public Deck()
+        {
+            cards = new Card[52];
+            var id = 0;
+            var index = 0;
+
+            foreach (var suit in new[] { "Spades", "Hearts", "Clubs", "Diamonds", })
+            {
+                for (var rank = 2; rank <= 14; rank++)
+                {
+                    id++;
+                    cards[index++] = new Card(id, rank, suit);
+                }
+            }
+        }
+    }
 
 
 }
