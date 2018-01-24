@@ -208,6 +208,7 @@ namespace Poker
                     if (sortHand[i].rank == sortHand[i - 1].rank)
                     {
                         pairRank = sortHand[i].rank;
+                        break;
                     }
                 }
 
@@ -215,7 +216,6 @@ namespace Poker
                 {
                     //Check for second pair
                     var remainCards = sortHand.Where(x => x.rank != pairRank).ToArray();
-
 
                     for (var i = remainCards.Count() - 1; i >= 1; i--)
                     {

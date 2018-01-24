@@ -139,6 +139,8 @@ namespace Poker
 
         public void checkHand()
         {
+            gameVars.handPhase = HandPhase.Score;
+
             var totalPlayerHand = new List<int>();
 
             var cardArray = new List<Card>();
@@ -167,7 +169,7 @@ namespace Poker
 
             var handResult = hand.EvaluateHand(cardArray.ToArray());
 
-            Clients.Caller.clientMessage("Player hand is worth: " + handResult);
+            Clients.Caller.clientScore(handResult);
         }
 
         public void selectNewDealer()
@@ -343,7 +345,8 @@ namespace Poker
         SecondBet = 4,
         Turn = 5,
         FinalBet = 6,
-        River = 7
+        River = 7,
+        Score = 8
 
     }
     

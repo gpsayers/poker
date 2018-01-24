@@ -76,7 +76,8 @@ var playerList,
     showflop = false,
     showopp = false,
     handPhase = 0,
-    readyFlag = false
+    readyFlag = false,
+    handScore = 0.0;
 
 
 var canvas = document.getElementById("canvas");
@@ -182,6 +183,13 @@ function updatePokerTable() {
         context.drawImage(imgFlopCard5, 600, 209, 100, 144);
     }
 
+    if (handPhase > 7) {
+        context.beginPath();
+        context.fillStyle = "black";
+        context.font = "30px Arial";
+        context.fillText(handScore, 500, 410);
+        context.closePath();
+    }
 
     var playerString = "";
 

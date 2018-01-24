@@ -40,6 +40,12 @@ pokerHub.client.clientPhase = function (phase) {
     
 }
 
+pokerHub.client.clientScore = function (score) {
+    handScore = score;
+    console.log("Player score: " + handScore);
+
+}
+
 pokerHub.client.chatMessage = function (chatMessage, name) {
     var encodedName = $('<div />').text(name).html();
     var encodedMsg = $('<div />').text(chatMessage).html();
