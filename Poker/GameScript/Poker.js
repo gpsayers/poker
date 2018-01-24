@@ -66,10 +66,6 @@ Deck.push(new Card(52, "Images/playingCards/ace_of_diamonds.svg"));
 Deck.push(new Card(99, "Images/playingCards/back.jpg"));
 
 
-var newDeck;
-
-
-
 var playerList,
     currentPlayer,
     seatsList = [],
@@ -79,7 +75,9 @@ var playerList,
     showhand = false,
     showflop = false,
     showopp = false,
-    handPhase = ""
+    handPhase = 0,
+    readyFlag = false
+
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -87,27 +85,6 @@ var context = canvas.getContext("2d");
 canvas.width = 725;
 canvas.height = 562;
 
-canvas.addEventListener('mouseup', function (event) {
-    var mousePos = getMousePos(canvas, event);
-
-    //Click on join table button
-    if (mousePos.x > 280 && mousePos.x < 440 && mousePos.y > 420 && mousePos.y < 460) {
-        if (seatsList.length < 2) {
-            playerSit();
-            getSeats();
-            showOpp();
-        }
-    }
-
-})
-
-function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-    };
-}
 
 //game loop vars
 var fps = 60,
@@ -169,8 +146,6 @@ function loadPokerTable() {
 
 }
 
-
-
 function updatePokerTable() {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -197,6 +172,14 @@ function updatePokerTable() {
         context.drawImage(imgFlopCard1, 140, 209, 100, 144);
         context.drawImage(imgFlopCard2, 255, 209, 100, 144);
         context.drawImage(imgFlopCard3, 370, 209, 100, 144);
+    }
+
+    if (handPhase > 4) {
+        context.drawImage(imgFlopCard4, 485, 209, 100, 144);
+    }
+
+    if (handPhase > 6) {
+        context.drawImage(imgFlopCard5, 600, 209, 100, 144);
     }
 
 
@@ -287,11 +270,25 @@ function loadFlop() {
             imgFlopCard3.src = cardInfo[0].image;
             imgFlopCard3.onload = function () {
                 context.drawImage(imgFlopCard3, 370, 209, 100, 144);
-                //context.drawImage(imgFlopCard3, 485, 209, 100, 144);
-                //context.drawImage(imgFlopCard3, 600, 209, 100, 144);
+
             }
         }
 
+        if (i == 4) {
+            imgFlopCard4 = new Image();
+            imgFlopCard4.src = cardInfo[0].image;
+            imgFlopCard4.onload = function () {
+                context.drawImage(imgFlopCard4, 485, 209, 100, 144);
+            }
+        }
+
+        if (i == 5) {
+            imgFlopCard5 = new Image();
+            imgFlopCard5.src = cardInfo[0].image;
+            imgFlopCard5.onload = function () {
+                context.drawImage(imgFlopCard5, 600, 209, 100, 144);
+            }
+        }
         i++;
         
     });
@@ -327,7 +324,6 @@ function loadOpps() {
 
     showopp = true;
 }
-
 
 function displayPlayerArea() {
     context.beginPath();

@@ -126,3 +126,15 @@ function getPhase() {
         pokerHub.server.getPhase();
     });
 }
+
+function getTurn() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getTurn();
+    });
+}
+
+function getRiver() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getRiver();
+    });
+}

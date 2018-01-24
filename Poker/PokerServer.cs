@@ -91,6 +91,27 @@ namespace Poker
             }
         }
 
+        public void getTurn()
+        {
+            gameVars.handPhase = HandPhase.Turn;
+
+            gameVars.cardsInPlay.Add(gameVars.deck[0]);
+            gameVars.deck.RemoveAt(0);
+
+            Clients.All.clientFlop(gameVars.cardsInPlay);
+
+        }
+
+        public void getRiver()
+        {
+            gameVars.handPhase = HandPhase.River;
+
+            gameVars.cardsInPlay.Add(gameVars.deck[0]);
+            gameVars.deck.RemoveAt(0);
+
+            Clients.All.clientFlop(gameVars.cardsInPlay);
+        }
+
         public void getFlop()
         {
             gameVars.handPhase = HandPhase.Flop;
