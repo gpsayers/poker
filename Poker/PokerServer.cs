@@ -55,7 +55,6 @@ namespace Poker
             foreach (var player in playersInHand)
             {
                 player.cardsRevealed = false;
-
                 player.cards.Add(gameVars.deck[0]);
                 gameVars.deck.RemoveAt(0);
                 player.cards.Add(gameVars.deck[0]);
@@ -203,7 +202,7 @@ namespace Poker
                 cards = new List<int>(),
                 connectionId = Context.ConnectionId,
                 tableSeat = 0,
-                money = 100
+                chips = 100
                 
             });
 
@@ -309,7 +308,7 @@ namespace Poker
         public List<int> cards { get; set; }
         public string connectionId { get; set; }
         public int tableSeat { get; set; }
-        public int money { get; set; }
+        public int chips { get; set; }
         public int ip { get; set; }
         public bool ready { get; set; }
         public bool cardsRevealed { get; set; }

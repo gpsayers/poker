@@ -93,7 +93,9 @@ var fps = 60,
     lastTime = (new Date()).getTime(),
     currentTime = 0,
     delta = 0,
-    cycles = 0
+    cycles = 0,
+    playerChips = 100
+
 
 function gameLoop() {
 
@@ -136,8 +138,7 @@ function loadPokerTable() {
     imgDeck.onload = function () {
         context.drawImage(imgDeck, 25, 209,100, 144);
     }
-
-
+    
     $("#ready").hide();
     $("#bet").hide();
     $("#fold").hide();
