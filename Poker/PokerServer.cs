@@ -137,6 +137,39 @@ namespace Poker
             }
         }
 
+        public void checkHand()
+        {
+            var totalPlayerHand = new List<int>();
+
+            var cardArray = new List<Card>();
+
+            var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
+
+            if (query.Any())
+            {
+                foreach (var cih in query.FirstOrDefault().cards)
+                {
+                    totalPlayerHand.Add(cih);
+                }
+            }
+
+            foreach (var cip in gameVars.cardsInPlay)
+            {
+                totalPlayerHand.Add(cip);
+            }
+
+            foreach (var cardId in totalPlayerHand)
+            {
+                cardArray.Add(protoDeck.Where(x => x.id == cardId).FirstOrDefault());
+            }
+
+            var hand = new PokerGame();
+
+            var handResult = hand.EvaluateHand(cardArray.ToArray());
+
+            Clients.Caller.clientMessage("Player hand is worth: " + handResult);
+        }
+
         public void selectNewDealer()
         {
             var playersInHand = playerList.Where(x => x.tableSeat > 0);

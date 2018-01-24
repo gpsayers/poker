@@ -138,3 +138,9 @@ function getRiver() {
         pokerHub.server.getRiver();
     });
 }
+
+function checkHand() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.checkHand();
+    });
+}

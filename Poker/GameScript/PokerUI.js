@@ -55,3 +55,14 @@ $("#turn").click(function () {
 $("#river").click(function () {
     getRiver();
 });
+
+
+$("#message").keyup(function (event) {
+    if (event.keyCode == 13) {
+        $('#send').click();
+    }
+});
+
+$("#check").click(function () {
+    checkHand();
+});
