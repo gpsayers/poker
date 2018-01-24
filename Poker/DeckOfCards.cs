@@ -45,10 +45,7 @@ namespace Poker
             }
 
             return retVal;
-        }
-
-        
-
+        }   
 
     }
 
@@ -66,7 +63,7 @@ namespace Poker
         public string suite { get; set; }
     }
 
-    class Deck
+    public class Deck
     {
         public Card[] cards;
 
@@ -87,5 +84,86 @@ namespace Poker
         }
     }
 
+    public enum PokerHands
+    {
+        HighCard = 0,
+        Pair = 1,
+        TwoPair = 2,
+        ThreeOfKind = 3,
+        Straight = 4,
+        Flush = 5,
+        FullHouse = 6,
+        FourOfKind = 7,
+        StraightFlush = 8,
+        RoyalFlush = 9
+    }
+
+    public class PokerGame
+    {
+        public int EvaluateHand(Card[] hand)
+        {
+            PokerHands handEnum = PokerHands.HighCard;
+            int result = 0;
+            int threeOfKindRank = 0;
+            int pairRank = 0;
+
+            var sortHand = hand.OrderBy(x => x.rank).ToArray();
+
+
+            foreach (var suite in new[] { "Spades", "Hearts", "Clubs", "Diamonds", })
+            {
+
+                if ((hand.Where(x => x.suite == suite).Count() >= 5))
+                {
+                    handEnum = PokerHands.Flush;
+                }
+
+            }
+
+            if (handEnum == PokerHands.Flush)
+            {
+                //Check for royal flush and straight flush
+
+            }
+            else
+            {
+                //Check for 4 of a kind
+                for (var i = 6; i >= 3; i-- )
+                {
+                    if (sortHand[i].rank == sortHand[i-3].rank)
+                    {
+                        handEnum = PokerHands.FourOfKind;
+                    }
+                }
+
+                //Check for 3 of a kind
+                for (var i = 6; i >= 2; i--)
+                {
+                    if (sortHand[i].rank == sortHand[i - 2].rank)
+                    {
+                        threeOfKindRank = sortHand[i].rank;
+                        break;
+                    }
+
+                }
+
+                if (threeOfKindRank > 0)
+                {
+                    var otherCards = sortHand.Where(x => x.rank != threeOfKindRank).ToArray();
+
+                    //Check for full house
+                    for (var i = otherCards.Count()-1; i >= 0; i--)
+                    {
+
+                    }
+                }
+
+            }
+
+            
+
+            return result;
+        }
+    }
 
 }
