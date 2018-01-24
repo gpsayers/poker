@@ -161,47 +161,45 @@ namespace Poker
                     var otherCards = sortHand.Where(x => x.rank != threeOfKindRank).ToArray();
 
                     //Check for full house
-                    for (var i = otherCards.Count()-1; i >= 0; i--)
+                    for (var i = otherCards.Count()-1; i >= 1; i--)
                     {
                         if (otherCards[i].rank == otherCards[i-1].rank)
                         {
                             pairRank = otherCards[i].rank;
-                            handEnum = PokerHands.FullHouse;
 
                             return Decimal.Parse(((int)PokerHands.FullHouse).ToString() + threeOfKindRank.ToString("00") + "." + pairRank.ToString("00"));
                         }
                     }
 
-                    //Check for straight
-                    var sQuery = sortHand.GroupBy(x => x.rank).Select(g => g.Key).ToList();
+                }
 
-                   
-                    if (sQuery.Count() >= 5)
+                //Check for straight
+                var sQuery = sortHand.GroupBy(x => x.rank).Select(g => g.Key).ToList();
+
+
+                if (sQuery.Count() >= 5)
+                {
+                    if (sQuery.ElementAt(sQuery.Count - 1) == 14)
                     {
-                        if (sQuery.ElementAt(sQuery.Count-1) == 14)
-                        {
-                            sQuery.Add(1);
-                            var nQuery = sQuery.OrderByDescending(x => x).ToList();
-                            sQuery = nQuery;
-                        }
-
-                        for (var i = 0; i <= 3; i++)
-                        {
-                            if (isStraight(sQuery.Skip(i).Take(5).ToArray()))
-                            {
-                                return Decimal.Parse(((int)PokerHands.Straight).ToString() + sQuery.Skip(i).Take(5).ElementAt(sQuery.Count()-1).ToString("00"));
-                            }
-                        }
-
+                        sQuery.Add(1);
+                        var nQuery = sQuery.OrderBy(x => x).ToList();
+                        sQuery = nQuery;
                     }
 
-                    //Three of a kind
-                    if (threeOfKindRank > 0)
+                    for (var i = 0; i <= 3; i++)
                     {
-                        return Decimal.Parse(((int)PokerHands.ThreeOfKind).ToString() + threeOfKindRank.ToString("00"));
+                        if (isStraight(sQuery.Skip(i).Take(5).ToArray()))
+                        {
+                            return Decimal.Parse(((int)PokerHands.Straight).ToString() + sQuery.Skip(i).Take(5).ElementAt(sQuery.Count() - 1).ToString("00"));
+                        }
                     }
 
+                }
 
+                //Three of a kind
+                if (threeOfKindRank > 0)
+                {
+                    return Decimal.Parse(((int)PokerHands.ThreeOfKind).ToString() + threeOfKindRank.ToString("00"));
                 }
 
                 //Check for pair
@@ -224,7 +222,6 @@ namespace Poker
                         if (remainCards[i].rank == remainCards[i - 1].rank)
                         {
                             var twopairRank = remainCards[i].rank;
-                            handEnum = PokerHands.TwoPair;
 
                             return Decimal.Parse(((int)PokerHands.TwoPair).ToString() + pairRank.ToString("00") + "." + twopairRank.ToString("00"));
                         }
