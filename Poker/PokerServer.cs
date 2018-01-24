@@ -137,6 +137,41 @@ namespace Poker
             }
         }
 
+        public void checkHand()
+        {
+            gameVars.handPhase = HandPhase.Score;
+
+            var totalPlayerHand = new List<int>();
+
+            var cardArray = new List<Card>();
+
+            var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
+
+            if (query.Any())
+            {
+                foreach (var cih in query.FirstOrDefault().cards)
+                {
+                    totalPlayerHand.Add(cih);
+                }
+            }
+
+            foreach (var cip in gameVars.cardsInPlay)
+            {
+                totalPlayerHand.Add(cip);
+            }
+
+            foreach (var cardId in totalPlayerHand)
+            {
+                cardArray.Add(protoDeck.Where(x => x.id == cardId).FirstOrDefault());
+            }
+
+            var hand = new PokerGame();
+
+            var handResult = hand.EvaluateHand(cardArray.ToArray());
+
+            Clients.Caller.clientScore(handResult);
+        }
+
         public void selectNewDealer()
         {
             var playersInHand = playerList.Where(x => x.tableSeat > 0);
@@ -310,7 +345,8 @@ namespace Poker
         SecondBet = 4,
         Turn = 5,
         FinalBet = 6,
-        River = 7
+        River = 7,
+        Score = 8
 
     }
     

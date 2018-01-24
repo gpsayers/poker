@@ -40,7 +40,6 @@ C:\Projects\poker\Poker\bin\Microsoft.Owin.xml
 C:\Projects\poker\Poker\bin\Microsoft.Owin.Host.SystemWeb.xml
 C:\Projects\poker\Poker\bin\Microsoft.Owin.Security.xml
 C:\Projects\poker\Poker\bin\Newtonsoft.Json.xml
-C:\Projects\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 C:\Projects\poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
 C:\Projects\poker\Poker\obj\Debug\Poker.dll
 C:\Projects\poker\Poker\obj\Debug\Poker.pdb
@@ -66,3 +65,4 @@ C:\Users\Sayers Family\Documents\GitHub\poker\Poker\bin\Newtonsoft.Json.xml
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.dll
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.pdb
+C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache

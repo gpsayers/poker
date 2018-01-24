@@ -40,6 +40,12 @@ pokerHub.client.clientPhase = function (phase) {
     
 }
 
+pokerHub.client.clientScore = function (score) {
+    handScore = score;
+    console.log("Player score: " + handScore);
+
+}
+
 pokerHub.client.chatMessage = function (chatMessage, name) {
     var encodedName = $('<div />').text(name).html();
     var encodedMsg = $('<div />').text(chatMessage).html();
@@ -136,5 +142,11 @@ function getTurn() {
 function getRiver() {
     $.connection.hub.start().done(function () {
         pokerHub.server.getRiver();
+    });
+}
+
+function checkHand() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.checkHand();
     });
 }
