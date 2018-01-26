@@ -1,16 +1,23 @@
-﻿canvas.addEventListener('mouseup', function (event) {
-    var mousePos = getMousePos(canvas, event);
+﻿canvas.addEventListener('mouseup',
+    function(event) {
+        var mousePos = getMousePos(canvas, event);
 
-    //Click on join table button
-    if (mousePos.x > 280 && mousePos.x < 440 && mousePos.y > 420 && mousePos.y < 460) {
-        if (seatsList.length < 2) {
-            playerSit();
-            getSeats();
-            showOpp();
+        //Click on join table button
+        if (mousePos.x > 280 && mousePos.x < 440 && mousePos.y > 420 && mousePos.y < 460) {
+            if (seatsList.length < 2) {
+                playerSit();
+                getSeats();
+                showOpp();
+            }
         }
-    }
 
-})
+    });
+
+canvas.addEventListener("touchend", function (e) {
+    var mouseEvent = new MouseEvent("mouseup", {});
+    canvas.dispatchEvent(mouseEvent);
+}, false);
+
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -45,7 +52,11 @@ $("#reveal").click(function () {
 
 $("#ready").click(function () {
     readyFlag = !readyFlag;
-    console.log(readyFlag);
+    if (readyFlag === true) {
+        $("#ready").removeClass('btn').addClass('btn btn-success');
+    } else {
+        $("#ready").removeClass("btn btn-success").addClass('btn');
+    }
 });
 
 $("#turn").click(function () {
@@ -58,7 +69,7 @@ $("#river").click(function () {
 
 
 $("#message").keyup(function (event) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
         $('#send').click();
     }
 });

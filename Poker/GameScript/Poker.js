@@ -93,7 +93,9 @@ var fps = 60,
     lastTime = (new Date()).getTime(),
     currentTime = 0,
     delta = 0,
-    cycles = 0
+    cycles = 0,
+    playerChips = 100
+
 
 function gameLoop() {
 
@@ -136,8 +138,7 @@ function loadPokerTable() {
     imgDeck.onload = function () {
         context.drawImage(imgDeck, 25, 209,100, 144);
     }
-
-
+    
     $("#ready").hide();
     $("#bet").hide();
     $("#fold").hide();
@@ -206,7 +207,6 @@ function updatePokerTable() {
 
 
     if (seatsList.length < 2 && seatsList.indexOf(currentPlayer) == -1) {
-
         context.beginPath();
         context.fillStyle = "black";
         context.font = "30px Arial";
@@ -337,7 +337,7 @@ function displayPlayerArea() {
     context.beginPath();
     context.fillStyle = "black";
     context.font = "30px Arial";
-    context.fillText(currentPlayer, 600, 410);
+    context.fillText(currentPlayer, 705 - context.measureText(currentPlayer).width, 410);
     context.closePath();
 
     $("#ready").show();
@@ -363,7 +363,7 @@ function displayOpponentArea() {
     context.beginPath();
     context.fillStyle = "black";
     context.font = "30px Arial";
-    context.fillText(other[0], 600, 165);
+    context.fillText(other[0], 705 - context.measureText(other[0]).width, 165);
     context.closePath();
 
 

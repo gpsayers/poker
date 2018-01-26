@@ -66,3 +66,4 @@ C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.csproj.CoreC
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.dll
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.pdb
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Projects\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache

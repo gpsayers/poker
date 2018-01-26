@@ -18,7 +18,6 @@ namespace Poker
 
             var array = list.ToArray();
 
-
             return FisherYatesShuffle(array).ToList();
 
         }
@@ -101,36 +100,54 @@ namespace Poker
     public class PokerGame
     {
         public decimal EvaluateHand(Card[] hand)
-        {
-            PokerHands handEnum = PokerHands.HighCard;
+        {            
             int threeOfKindRank = 0;
             int pairRank = 0;
             int highFlushRank = 0;
 
             var sortHand = hand.OrderBy(x => x.rank).ToArray();
 
-
             foreach (var suite in new[] { "Spades", "Hearts", "Clubs", "Diamonds", })
             {
-
-                if ((sortHand.Where(x => x.suite == suite).Count() >= 5))
+                if ((sortHand.Count(x => x.suite == suite) >= 5))
                 {
-                    highFlushRank = sortHand[sortHand.Length - 1].rank;
+                    var suiteArray = sortHand.Where(x => x.suite == suite).ToArray();
+                    highFlushRank = suiteArray[suiteArray.Length - 1].rank;
                 }
-
             }
 
             if (highFlushRank > 0)
             {
                 //Check for royal flush and straight flush
-                //TODO:
+                var sQuery = sortHand.GroupBy(x => x.rank).Select(g => g.Key).ToList();
 
+                if (sQuery.Count() >= 5)
+                {
+                    if (sQuery.ElementAt(sQuery.Count - 1) == 14)
+                    {
+                        sQuery.Add(1);
+                        var nQuery = sQuery.OrderBy(x => x).ToList();
+                        sQuery = nQuery;
+                    }
 
+                    for (var i = 0; i <= 3; i++)
+                    {
+                        var testArray = sQuery.Skip(i).Take(5).ToArray();
+                        if (isSequential(testArray))
+                        {
+                            if (testArray[testArray.Length - 1] == 14)
+                            {
+                                //Holy shit RF!!
+                                return ((int)PokerHands.RoyalFlush)*100;
+                            }
+
+                            return Decimal.Parse(((int)PokerHands.StraightFlush) + testArray[testArray.Length - 1].ToString("00"));
+                        }
+                    }
+                }
 
                 //Else just a flush
-                handEnum = PokerHands.Flush;
-
-                return Int32.Parse(((int)handEnum).ToString() + highFlushRank.ToString("00"));
+                return Int32.Parse(((int)PokerHands.Flush).ToString() + highFlushRank.ToString("00"));
             }
             else
             {
@@ -139,8 +156,6 @@ namespace Poker
                 {
                     if (sortHand[i].rank == sortHand[i-3].rank)
                     {
-                        handEnum = PokerHands.FourOfKind;
-
                         return Int32.Parse(((int)PokerHands.FourOfKind).ToString() + sortHand[i].rank.ToString("00"));
                     }
                 }
@@ -153,7 +168,6 @@ namespace Poker
                         threeOfKindRank = sortHand[i].rank;
                         break;
                     }
-
                 }
 
                 if (threeOfKindRank > 0)
@@ -170,12 +184,10 @@ namespace Poker
                             return Decimal.Parse(((int)PokerHands.FullHouse).ToString() + threeOfKindRank.ToString("00") + "." + pairRank.ToString("00"));
                         }
                     }
-
                 }
 
                 //Check for straight
                 var sQuery = sortHand.GroupBy(x => x.rank).Select(g => g.Key).ToList();
-
 
                 if (sQuery.Count() >= 5)
                 {
@@ -188,12 +200,12 @@ namespace Poker
 
                     for (var i = 0; i <= 3; i++)
                     {
-                        if (isStraight(sQuery.Skip(i).Take(5).ToArray()))
+                        var testArray = sQuery.Skip(i).Take(5).ToArray();
+                        if (isSequential(testArray))
                         {
-                            return Decimal.Parse(((int)PokerHands.Straight).ToString() + sQuery.Skip(i).Take(5).ElementAt(sQuery.Count() - 1).ToString("00"));
+                            return Decimal.Parse(((int)PokerHands.Straight).ToString() + testArray[testArray.Length-1].ToString("00"));
                         }
                     }
-
                 }
 
                 //Three of a kind
@@ -233,26 +245,21 @@ namespace Poker
                 return Decimal.Parse(((int)PokerHands.HighCard).ToString() + sortHand[sortHand.Length - 1].rank.ToString("00"));
             }
 
-
         }
 
-        public bool isStraight(int[] cardArray)
+        public bool isSequential(int[] cardArray)
         {
             try
             {
-                if (cardArray[0] < cardArray[1]
-    && cardArray[1] < cardArray[2]
-    && cardArray[2] < cardArray[3]
-    && cardArray[3] < cardArray[4]
-    && cardArray[4] < cardArray[5])
+                if (cardArray[0] == (cardArray[1]-1)
+    && cardArray[1] == (cardArray[2]-1)
+    && cardArray[2] == (cardArray[3]-1)
+    && cardArray[3] == (cardArray[4]-1))
                 {
                     return true;
                 }
             }
-            catch
-            {
-
-            }
+            catch{}
 
             return false;
         }
