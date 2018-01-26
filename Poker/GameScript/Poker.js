@@ -214,7 +214,7 @@ function updatePokerTable() {
         context.beginPath();
         context.fillStyle = "black";
         context.font = "30px Arial";
-        context.fillText("Sit at table", 290, 470);
+        context.fillText("Sit at table", 290, 472);
         //context.rect(280, 420, 160, 40);
         context.arc(362.5, 465, 75, 0, 2 * Math.PI);
         context.stroke();
