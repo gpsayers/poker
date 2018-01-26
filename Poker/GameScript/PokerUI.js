@@ -52,7 +52,11 @@ $("#reveal").click(function () {
 
 $("#ready").click(function () {
     readyFlag = !readyFlag;
-    console.log(readyFlag);
+    if (readyFlag === true) {
+        $("#ready").removeClass('btn').addClass('btn btn-success');
+    } else {
+        $("#ready").removeClass("btn btn-success").addClass('btn');
+    }
 });
 
 $("#turn").click(function () {
