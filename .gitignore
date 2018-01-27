@@ -55,3 +55,8 @@ _ReSharper/
 
 #Ignore installer files
 *.msi
+*.dll
+*.dll
+*.pdb
+Poker/obj/Debug/Poker.csproj.FileListAbsolute.txt
+*.cache

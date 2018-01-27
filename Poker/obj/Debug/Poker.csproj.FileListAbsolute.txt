@@ -67,3 +67,26 @@ C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.dll
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.pdb
 C:\Users\Sayers Family\Documents\GitHub\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
 C:\Projects\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Poker.dll.config
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Poker.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Poker.pdb
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Owin.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Owin.Security.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Newtonsoft.Json.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Owin.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Owin.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Microsoft.Owin.Security.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\bin\Newtonsoft.Json.xml
+C:\Users\Garth\Documents\GitHub\poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+C:\Users\Garth\Documents\GitHub\poker\Poker\obj\Debug\Poker.csproj.CoreCompileInputs.cache
+C:\Users\Garth\Documents\GitHub\poker\Poker\obj\Debug\Poker.dll
+C:\Users\Garth\Documents\GitHub\poker\Poker\obj\Debug\Poker.pdb
