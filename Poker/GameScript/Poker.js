@@ -163,12 +163,8 @@ function updatePokerTable() {
     context.rect(10, 194, 705, 174);
     context.rect(10, 378, 245, 174);
     context.rect(265, 378, 450, 174);
-    //context.rect(25, 209, 100, 144);
-
-
     context.stroke();
     context.closePath();
-
 
     context.drawImage(imgDeck, 25, 209, 100, 144);
     context.drawImage(imgDeck, 23, 207, 100, 144);
