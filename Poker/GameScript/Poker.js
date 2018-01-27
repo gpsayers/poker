@@ -77,7 +77,9 @@ var playerList,
     showopp = false,
     handPhase = 0,
     readyFlag = false,
-    handScore = 0.0;
+    handScore = 0.0,
+    playerChips = 100,
+    currentPot = 0
 
 
 var canvas = document.getElementById("canvas");
@@ -93,8 +95,7 @@ var fps = 60,
     lastTime = (new Date()).getTime(),
     currentTime = 0,
     delta = 0,
-    cycles = 0,
-    playerChips = 100
+    cycles = 0;
 
 
 function gameLoop() {
@@ -132,6 +133,8 @@ function gameLoop() {
 }
 
 function loadPokerTable() {
+
+    //playerChips = localStorage.getItem();
 
     imgDeck = new Image();
     imgDeck.src = "Images/playingCards/back.jpg";
@@ -211,6 +214,7 @@ function updatePokerTable() {
         context.fillStyle = "black";
         context.font = "30px Arial";
         context.fillText("Sit at table", 290, 472);
+        //Previous rectangle button
         //context.rect(280, 420, 160, 40);
         context.arc(362.5, 465, 75, 0, 2 * Math.PI);
         context.stroke();
@@ -339,6 +343,11 @@ function displayPlayerArea() {
     context.fillStyle = "black";
     context.font = "30px Arial";
     context.fillText(currentPlayer, 705 - context.measureText(currentPlayer).width, 410);
+
+    var chipsText = "Chips: " + playerChips;
+    context.fillText(chipsText, 705 - context.measureText(chipsText).width, 540);
+    context.fillText("Pot: " + currentPot, 275, 410);
+
     context.closePath();
 
     $("#ready").show();

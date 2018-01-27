@@ -39,8 +39,8 @@
 
             padding: 5px;
         }
-        .bet {
-            display: inline-block;
+        .handButtons {
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -94,18 +94,14 @@
 
                 </div>
                 <div class="row">
-
-                        <div class="col-12">
-                            <div class="playerButtons form-inline">
-
-                                <input class="btn" type="button" id="bet" value="Bet" />
-                                <input class="text-control" type="text" id="betval" />
-                                <input class="btn" type="button" id="fold" value="Fold" />
-                                <input class="btn" type="button" id="pass" value="Pass" />
-                                <input class="btn" type="button" id="reveal" value="Reveal" />
-
-
-                            </div>
+                   <div class="col-12">
+                       <div class="playerButtons form-inline">
+                        <input class="btn handButtons" type="button" id="bet" value="Bet" />
+                        <input class="form-control handButtons" type="text" id="betval" style="width: 45px;" />
+                        <input class="btn handButtons" type="button" id="fold" value="Fold" />
+                        <input class="btn handButtons" type="button" id="pass" value="Pass" />
+                        <input class="btn handButtons" type="button" id="reveal" value="Reveal" />
+                       </div>
                     </div>
                 </div>
                 <div class="row">
@@ -119,8 +115,8 @@
                 </div>
 
 
-
             </div>
+
         </div>
 
 
