@@ -3,13 +3,26 @@
         var mousePos = getMousePos(canvas, event);
 
         //Click on join table button
-        if (mousePos.x > 280 && mousePos.x < 440 && mousePos.y > 420 && mousePos.y < 460) {
-            if (seatsList.length < 2) {
-                playerSit();
-                getSeats();
-                showOpp();
-            }
+        //if (mousePos.x > 280 && mousePos.x < 440 && mousePos.y > 420 && mousePos.y < 460) {
+        //    if (seatsList.length < 2) {
+        //        playerSit();
+        //        getSeats();
+        //        showOpp();
+        //    }
+        //}
+        var circle = {
+            x: 362.5,
+            y: 465,
+            radius: 75
         }
+
+        //Click on join table circle
+        if (isIntersect(mousePos,circle)) {
+            playerSit();
+            getSeats();
+            showOpp();
+        }
+
 
     });
 
@@ -27,6 +40,9 @@ function getMousePos(canvas, evt) {
     };
 }
 
+function isIntersect(point, circle) {
+    return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
+}
 
 
 $("#stand").click(function () {

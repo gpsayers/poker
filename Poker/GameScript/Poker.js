@@ -158,10 +158,14 @@ function updatePokerTable() {
 
     context.beginPath();
     context.rect(1, 1, 723, 560);
-    context.rect(10, 10, 705, 174);
+    context.rect(10, 10, 245, 174);
+    context.rect(265, 10, 450, 174);
     context.rect(10, 194, 705, 174);
-    context.rect(10, 378, 705, 174);
+    context.rect(10, 378, 245, 174);
+    context.rect(265, 378, 450, 174);
     //context.rect(25, 209, 100, 144);
+
+
     context.stroke();
     context.closePath();
 
@@ -210,8 +214,9 @@ function updatePokerTable() {
         context.beginPath();
         context.fillStyle = "black";
         context.font = "30px Arial";
-        context.fillText("Sit at table", 290, 450);
-        context.rect(280, 420, 160, 40);
+        context.fillText("Sit at table", 290, 472);
+        //context.rect(280, 420, 160, 40);
+        context.arc(362.5, 465, 75, 0, 2 * Math.PI);
         context.stroke();
         context.closePath();
     } else {

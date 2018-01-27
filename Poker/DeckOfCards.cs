@@ -211,7 +211,9 @@ namespace Poker
                 //Three of a kind
                 if (threeOfKindRank > 0)
                 {
-                    return Decimal.Parse(((int)PokerHands.ThreeOfKind).ToString() + threeOfKindRank.ToString("00"));
+                    var otherCards = sortHand.Where(x => x.rank != threeOfKindRank).ToArray();
+
+                    return Decimal.Parse(((int)PokerHands.ThreeOfKind).ToString() + threeOfKindRank.ToString("00") + "." + otherCards[otherCards.Length-1].rank.ToString("00") + otherCards[otherCards.Length - 2].rank.ToString("00"));
                 }
 
                 //Check for pair
@@ -235,14 +237,17 @@ namespace Poker
                         {
                             var twopairRank = remainCards[i].rank;
 
-                            return Decimal.Parse(((int)PokerHands.TwoPair).ToString() + pairRank.ToString("00") + "." + twopairRank.ToString("00"));
+                            var otherCards1 = sortHand.Where(x => x.rank != pairRank && x.rank != twopairRank).ToArray();
+
+                            return Decimal.Parse(((int)PokerHands.TwoPair).ToString() + pairRank.ToString("00") + "." + twopairRank.ToString("00") + otherCards1[otherCards1.Length - 1].rank.ToString("00"));
                         }
                     }
+                    var otherCards = sortHand.Where(x => x.rank != pairRank).ToArray();
 
-                    return Decimal.Parse(((int)PokerHands.Pair).ToString() + pairRank.ToString("00"));
+                    return Decimal.Parse(((int)PokerHands.Pair).ToString() + pairRank.ToString("00") + "." + otherCards[otherCards.Length - 1].rank.ToString("00") + otherCards[otherCards.Length - 2].rank.ToString("00"));
                 }
 
-                return Decimal.Parse(((int)PokerHands.HighCard).ToString() + sortHand[sortHand.Length - 1].rank.ToString("00"));
+                return Decimal.Parse(((int)PokerHands.HighCard).ToString() + sortHand[sortHand.Length - 1].rank.ToString("00") + "." + sortHand[sortHand.Length - 2].rank.ToString("00"));
             }
 
         }

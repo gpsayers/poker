@@ -39,6 +39,9 @@
             display: inline-block;
             padding: 5px;
         }
+        .bet {
+            display: inline-block;
+        }
     </style>
 </head>
 <body style="overflow-x: scroll;">
@@ -88,23 +91,32 @@
                         <input class="btn" type="button" id="ready" value="Ready"/>
                         <input style="margin-right: 10px;" class="btn btn-danger float-right" type="button" id="stand" value="Leave Table"/>
                     </div>
-                    <div class="col-12">
-                        <div class="playerButtons">
 
-                            <input class="btn" type="button" id="bet" value="Bet"/>
-                            <input class="btn" type="button" id="fold" value="Fold"/>
-                            <input type="button" id="pass" value="Pass"/>
-                            <input type="button" id="reveal" value="Reveal"/>
+                </div>
+                <div class="row">
 
-                            <input type="button" id="deal" value="deal"/>
-                            <input type="button" id="flop" value="flop"/>
-                            <input type="button" id="turn" value="turn"/>
-                            <input type="button" id="river" value="river"/>
-                            <input type="button" id="check" value="Eval"/>
-                        </div>
+                        <div class="col-12">
+                            <div class="playerButtons">
+
+                                <input class="btn" type="button" id="bet" value="Bet" />
+                                <input class="form-control" type="text" id="betval" />
+                                <input class="btn" type="button" id="fold" value="Fold" />
+                                <input class="btn" type="button" id="pass" value="Pass" />
+                                <input class="btn" type="button" id="reveal" value="Reveal" />
+
+
+                            </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-12">
+                        <input type="button" id="deal" value="deal" />
+                        <input type="button" id="flop" value="flop" />
+                        <input type="button" id="turn" value="turn" />
+                        <input type="button" id="river" value="river" />
+                        <input type="button" id="check" value="Eval" />
+                    </div>
+                </div>
 
 
 
