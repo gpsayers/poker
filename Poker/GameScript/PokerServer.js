@@ -47,8 +47,31 @@ pokerHub.client.clientScore = function (score) {
 }
 
 pokerHub.client.gameInfo = function (info) {
+    console.log(info);
     var gameInfo = info;
     var opp = info.opponent;
+    handPhase = gameInfo.handPhase;
+    flopCardArray = gameInfo.cardsInPlay;
+    currentPot = gameInfo.currentPot;
+    gameDealer = gameInfo.dealer;
+    gameReady = gameInfo.gameReady;
+    gameHandInProgress = gameInfo.handInProgress;
+    gameCurrentRaise = gameInfo.currentRaise;
+    gamePlayerTurn = gameInfo.playerTurn;
+    currentRaise = gameInfo.currentRaise;
+    currentAmountToCall = gameInfo.currentAmountToCall;
+    smallBlindPlayer = gameInfo.smallBlind
+    if (opp != null) {
+        oppChips = opp[0].chips;
+        oppReady = opp[0].ready;
+        oppName = opp[0].name;
+        oppSeat = opp[0].tableSeat;
+        oppRevealCards = opp[0].cardsRevealed;
+        oppAllIn = opp[0].allin;
+        oppCalled = opp[0].called;
+        oppFolded = opp[0].folded;
+        oppRaised = opp[0].raised;
+    }
 
 
 }
@@ -121,7 +144,7 @@ function dealFlop() {
     });
 }
 
-function showOpp() {
+function showOppCards() {
     $.connection.hub.start().done(function () {
         pokerHub.server.showOpp();
     });

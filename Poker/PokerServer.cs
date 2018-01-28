@@ -31,9 +31,6 @@ namespace Poker
                 return;
             }
 
-            gameVars.handInProgress = true;
-
-
             var playersInHand = playerList.Where(x => x.tableSeat > 0);
 
 
@@ -42,7 +39,14 @@ namespace Poker
                 //No players cancel hand
                 return;
             }
-            
+
+            gameVars.handInProgress = true;
+            gameVars.handPhase = HandPhase.Deal;
+            gameVars.currentAmountToCall = 0;
+            gameVars.currentRaise = 0;
+            gameVars.currentPot = 0;
+            gameVars.playerTurn = gameVars.dealer;
+            gameVars.smallBlind = gameVars.dealer;
 
             gameVars.currentPlayers = playersInHand.Select(x => x.connectionId).ToList();
 
@@ -54,6 +58,11 @@ namespace Poker
 
             foreach (var player in playersInHand)
             {
+                player.allin = false;
+                player.folded = false;
+                player.called = false;
+                player.raised = false;
+
                 player.cardsRevealed = false;
                 player.cards.Add(gameVars.deck[0]);
                 gameVars.deck.RemoveAt(0);
@@ -68,11 +77,8 @@ namespace Poker
             gameVars.cardsInPlay.Add(gameVars.deck[0]);
             gameVars.deck.RemoveAt(0);
 
-            gameVars.handPhase = HandPhase.Deal;
 
-
-            //Clean up
-            gameVars.handInProgress = false;
+            gameVars.handPhase = HandPhase.FirstBet;
 
             Clients.All.dealAll();
 
@@ -175,20 +181,20 @@ namespace Poker
         {
             var playersInHand = playerList.Where(x => x.tableSeat > 0);
 
-            var currentDealer = playersInHand.Where(x => x.connectionId == gameVars.dealer);
+            var currentDealer = playersInHand.Where(x => x.name == gameVars.dealer);
 
             if (currentDealer.Any())
             {
                 var index = playersInHand.ToList().IndexOf(currentDealer.FirstOrDefault());
                 if (index++ > playersInHand.Count() - 1)
                 {
-                    gameVars.dealer = playersInHand.ToList()[0].connectionId;
+                    gameVars.dealer = playersInHand.ToList()[0].name;
                 }
 
             }
             else
             {
-                gameVars.dealer = playersInHand.ToList()[0].connectionId;
+                gameVars.dealer = playersInHand.ToList()[0].name;
             }
         }
 
@@ -202,7 +208,9 @@ namespace Poker
                 cards = new List<int>(),
                 connectionId = Context.ConnectionId,
                 tableSeat = 0,
-                chips = 100
+                chips = 100,
+                ready = false,
+                cardsRevealed = false
                 
             });
 
@@ -247,7 +255,8 @@ namespace Poker
             {
                 query.FirstOrDefault().tableSeat = 100;
             }
-            
+
+            selectNewDealer();
         }
 
         public void PlayerStand()
@@ -265,7 +274,7 @@ namespace Poker
             }
         }
 
- public void PlayerReady(bool ready)
+        public void PlayerReady(bool ready)
         {
 
             var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
@@ -273,6 +282,16 @@ namespace Poker
             if (query.Any())
             {
                 query.FirstOrDefault().ready = ready;
+            }
+
+            if (ready)
+            {
+                var readyQuery = playerList.Where(x => x.tableSeat > 0 && x.ready == true);
+
+                if (readyQuery.Count() >= 2)
+                {
+                    gameVars.gameReady = true;
+                }
             }
         }
 
@@ -289,7 +308,11 @@ namespace Poker
                                    i.cardsRevealed,
                                    i.ready,
                                    i.name,
-                                   i.tableSeat
+                                   i.tableSeat,
+                                   i.allin,
+                                   i.called,
+                                   i.folded,
+                                   i.raised
                                };
 
                 var gameInfo = new
@@ -301,8 +324,14 @@ namespace Poker
                     gameVars.gameReady,
                     gameVars.handInProgress,
                     gameVars.handPhase,
+                    gameVars.playerTurn,
+                    gameVars.currentRaise,
+                    gameVars.currentAmountToCall,
+                    gameVars.smallBlind,
                     opponent = opponent
                 };
+
+                Clients.All.gameInfo(gameInfo);
             }
             else
             {
@@ -317,6 +346,8 @@ namespace Poker
                     gameVars.handPhase,
 
                 };
+
+                Clients.All.gameInfo(gameInfo);
             }
         }
 
@@ -337,6 +368,12 @@ namespace Poker
                     //TODO: Take care of a player leaving in the game
                     gameVars.handPhase = HandPhase.PreGame;
                     gameVars.handInProgress = false;
+                    gameVars.currentAmountToCall = 0;
+                    gameVars.currentRaise = 0;
+                    gameVars.smallBlind = "";
+                    gameVars.currentPot = 0;
+                    gameVars.gameReady = false;
+                    gameVars.playerTurn = "";
                     gameVars.cardsInPlay = new List<int>();
                 }
                 
@@ -367,6 +404,10 @@ namespace Poker
         public int ip { get; set; }
         public bool ready { get; set; }
         public bool cardsRevealed { get; set; }
+        public bool folded { get; set; }
+        public bool allin { get; set; }
+        public bool called { get; set; }
+        public bool raised { get; set; }
 
     }
 
@@ -386,7 +427,10 @@ namespace Poker
         public List<int> deck { get; set; }
         public bool handInProgress { get; set; }
         public HandPhase handPhase { get; set; }
-
+        public string playerTurn { get; set; }
+        public int currentAmountToCall { get; set; }
+        public int currentRaise { get; set; }
+        public string smallBlind { get; set; }
 
     }
 

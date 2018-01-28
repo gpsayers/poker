@@ -20,7 +20,7 @@
         if (isIntersect(mousePos,circle)) {
             playerSit();
             getSeats();
-            showOpp();
+            showOppCards();
         }
 
 
@@ -138,5 +138,10 @@ $("#fold").click(function () {
 });
 
 $("#pass").click(function () {
+    //pass the current round of betting
+    //May only pass if current raise is 0
+});
+
+$("#call").click(function () {
     //pass the current round of betting
 });

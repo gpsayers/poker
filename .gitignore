@@ -61,3 +61,4 @@ _ReSharper/
 Poker/obj/Debug/Poker.csproj.FileListAbsolute.txt
 *.cache
 *.suo
+*.ide
