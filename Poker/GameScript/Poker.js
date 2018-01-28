@@ -79,7 +79,8 @@ var playerList,
     readyFlag = false,
     handScore = 0.0,
     playerChips = 100,
-    currentPot = 0
+    currentPot = 0,
+    betAmount = 0;
 
 
 var canvas = document.getElementById("canvas");
@@ -134,7 +135,17 @@ function gameLoop() {
 
 function loadPokerTable() {
 
+        //$.getJSON('http://freegeoip.net/json/?callback=?', function (data) {
+    //    var ip = data.ip;
+    //});
+
     //playerChips = localStorage.getItem();
+    playerChips = localStorage.getItem('chips');
+
+    if (playerChips == null) {
+        playerChips = 100;
+        localStorage.setItem('chips', playerChips);
+    }
 
     imgDeck = new Image();
     imgDeck.src = "Images/playingCards/back.jpg";
@@ -142,13 +153,40 @@ function loadPokerTable() {
         context.drawImage(imgDeck, 25, 209,100, 144);
     }
     
+    imgDealer = new Image();
+    imgDealer.src = "Images/chip_dealer.png";
+    imgDealer.onload = function () {
+        context.drawImage(imgDealer, 200, 209, 100, 100);
+    }
+
+    imgChip1 = new Image();
+    imgChip1.src = "Images/chip_white_flat.png";
+    imgChip1.onload = function () {
+        context.drawImage(imgChip1, 200, 209, 100, 100);
+    }
+
+    imgChip5 = new Image();
+    imgChip5.src = "Images/chip_red_flat.png";
+    imgChip5.onload = function () {
+        context.drawImage(imgChip5, 200, 209, 100, 100);
+    }
+    
+    imgChip10 = new Image();
+    imgChip10.src = "Images/chip_blue_flat.png";
+    imgChip10.onload = function () {
+        context.drawImage(imgChip10, 200, 209, 100, 100);
+    }
+    
     $("#ready").hide();
     $("#bet").hide();
+    $("#bet5").hide();
+    $("#bet10").hide();
+    $("#betval").hide();
     $("#fold").hide();
     $("#check").hide();
     $("#reveal").hide();
     $("#stand").hide();
-
+    $("#pass").hide();
 }
 
 function updatePokerTable() {
@@ -344,7 +382,47 @@ function displayPlayerArea() {
     context.font = "30px Arial";
     context.fillText(currentPlayer, 705 - context.measureText(currentPlayer).width, 410);
 
-    var chipsText = "Chips: " + playerChips;
+    context.drawImage(imgDealer, 485, 385, 50, 50);
+    
+    var chipCalc = playerChips,
+        chip1 = 0,
+        chip5 = 0,
+        chip10 = 0;
+
+    while (chipCalc % 5 != 0) {
+        chipCalc--;
+        chip1++;
+    }
+
+    if (chipCalc >= 25) {
+        while (chipCalc % 10 != 0 || chip5 < 4) {
+            chipCalc = chipCalc - 5;
+            chip5++;
+        }
+        chip10 = chipCalc / 10;
+    }
+    else {
+        chip5 = chipCalc / 5;
+    }
+    
+if (chip1 == 0 && chipCalc > 0) {
+        chip1 = 5;
+        chip5--;
+    }
+    
+    for (i = 0; i < chip10; i++) {
+        context.drawImage(imgChip10, 570, (505 - (i * 5)), 50, 21);
+    }
+
+    for (i = 0; i < chip1; i++) {
+        context.drawImage(imgChip1, 600, (525-(i*5)), 50, 21);
+    }
+    for (i = 0; i < chip5; i++) {
+        context.drawImage(imgChip5, 540, (525 - (i * 5)), 50, 21);
+    }
+
+
+    var chipsText = playerChips;
     context.fillText(chipsText, 705 - context.measureText(chipsText).width, 540);
     context.fillText("Pot: " + currentPot, 275, 410);
 
@@ -356,6 +434,11 @@ function displayPlayerArea() {
     $("#check").show();
     $("#reveal").show();
     $("#stand").show();
+        $("#bet5").show();
+    $("#bet10").show();
+    $("#betval").show();
+    $("#fold").show();
+    $("#pass").show();
 
     if (showhand == true) {
         context.drawImage(imgPlayerCard1, 25, 393, 100, 144);
