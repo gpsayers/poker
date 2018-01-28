@@ -73,6 +73,7 @@ $("#ready").click(function () {
     } else {
         $("#ready").removeClass("btn btn-success").addClass('btn');
     }
+    playerReady(readyFlag);
 });
 
 $("#turn").click(function () {
@@ -92,4 +93,50 @@ $("#message").keyup(function (event) {
 
 $("#check").click(function () {
     checkHand();
+});
+
+$("#bet").click(function () {
+
+    betAmount = $("#betval").val();
+    if (parseInt(betAmount) > playerChips) {
+        //Not a valid amount
+        bootbox.alert("Not enough chips.")
+    }
+    else {
+        playerChips = playerChips - betAmount;
+        currentPot = parseInt(currentPot) + parseInt(betAmount);
+    }
+
+});
+
+$("#bet5").click(function () {
+    betAmount = 5;
+    if (betAmount > playerChips) {
+        //Not a valid amount
+        bootbox.alert("Not enough chips.")
+    }
+    else {
+        playerChips = playerChips - betAmount;
+        currentPot = parseInt(currentPot) + parseInt(betAmount);
+    }
+});
+
+$("#bet10").click(function () {
+    betAmount = 10;
+    if (betAmount > playerChips) {
+        //Not a valid amount
+        bootbox.alert("Not enough chips.")
+    }
+    else {
+        playerChips = playerChips - betAmount;
+        currentPot = parseInt(currentPot) + parseInt(betAmount);
+    }
+});
+
+$("#fold").click(function () {
+    //fold the hand
+});
+
+$("#pass").click(function () {
+    //pass the current round of betting
 });
