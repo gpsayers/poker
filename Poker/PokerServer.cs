@@ -265,6 +265,61 @@ namespace Poker
             }
         }
 
+ public void PlayerReady(bool ready)
+        {
+
+            var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
+
+            if (query.Any())
+            {
+                query.FirstOrDefault().ready = ready;
+            }
+        }
+
+        public void getGameInfo()
+        {
+            var oppQuery = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0 );
+
+            if (oppQuery.Any())
+            {
+                var opponent = from i in oppQuery
+                               select new
+                               {
+                                   i.chips,
+                                   i.cardsRevealed,
+                                   i.ready,
+                                   i.name,
+                                   i.tableSeat
+                               };
+
+                var gameInfo = new
+                {
+                    gameVars.cardsInPlay,
+                    gameVars.currentPlayers,
+                    gameVars.currentPot,
+                    gameVars.dealer,
+                    gameVars.gameReady,
+                    gameVars.handInProgress,
+                    gameVars.handPhase,
+                    opponent = opponent
+                };
+            }
+            else
+            {
+                var gameInfo = new
+                {
+                    gameVars.cardsInPlay,
+                    gameVars.currentPlayers,
+                    gameVars.currentPot,
+                    gameVars.dealer,
+                    gameVars.gameReady,
+                    gameVars.handInProgress,
+                    gameVars.handPhase,
+
+                };
+            }
+        }
+
         public void Send(string message, string name)
         {
             Clients.All.chatMessage(message, name);
