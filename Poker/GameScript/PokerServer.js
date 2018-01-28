@@ -46,6 +46,13 @@ pokerHub.client.clientScore = function (score) {
 
 }
 
+pokerHub.client.gameInfo = function (info) {
+    var gameInfo = info;
+    var opp = info.opponent;
+
+
+}
+
 pokerHub.client.chatMessage = function (chatMessage, name) {
     var encodedName = $('<div />').text(name).html();
     var encodedMsg = $('<div />').text(chatMessage).html();
@@ -148,5 +155,17 @@ function getRiver() {
 function checkHand() {
     $.connection.hub.start().done(function () {
         pokerHub.server.checkHand();
+    });
+}
+
+function playerReady(ready) {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.playerReady(ready);
+    });
+}
+
+function getGameInfo() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getGameInfo();
     });
 }
