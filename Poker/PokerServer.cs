@@ -109,8 +109,6 @@ namespace Poker
 
                 gameVars.currentPot = gameVars.currentPot + big;
 
-                bigBlindQuery.FirstOrDefault().raised = true;
-
                 gameVars.currentRaise = big - small;
 
                 gameVars.currentAmountToCall = big - small;
@@ -143,7 +141,10 @@ namespace Poker
                     getRiver();
                     break;
                 case HandPhase.FinalBet:
-                    //eval hands for winner;
+                    checkHand();
+                    break;
+                case HandPhase.Victory:
+                    restartGameHandEnded();
                     break;
             }
         }
@@ -192,22 +193,12 @@ namespace Poker
 
             if (playerQuery != null)
             {
-                gameVars.currentRaise = 0;
-                gameVars.currentAmountToCall = 0;
-                gameVars.handInProgress = false;
-                gameVars.handPhase = HandPhase.PreGame;
-                gameVars.playerTurn = "";
 
-                var winner = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0).FirstOrDefault();
+                var winner = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0);
 
-                winner.chips = winner.chips + gameVars.currentPot;
+                playerWinner(winner);
 
-                gameVars.currentPot = 0;
-
-                playerQuery.raised = false;
-                playerQuery.allin = false;
-                playerQuery.called = false;
-                playerQuery.folded = true;
+                restartGameHandEnded();
 
                 selectNewDealer();
             }
@@ -272,17 +263,35 @@ namespace Poker
 
         public void checkHand()
         {
-            gameVars.handPhase = HandPhase.PreGame;
+            var playerTuple = new List<Tuple<string, decimal>>();
+
+            foreach (var player in playerList.Where(x => x.tableSeat > 0))
+            {
+                var handScore = evaluateHand(player.connectionId);
+
+                playerTuple.Add(new Tuple<string, decimal>(player.connectionId, handScore));
+            }
+
+            playerTuple.Sort((x,y) => -1 * x.Item2.CompareTo(y.Item2));
+
+            gameVars.handPhase = HandPhase.Victory;
+
+            //Return the winners name
+            Clients.Caller.clientScore(playerTuple[0].Item1);
+        }
+
+        public decimal evaluateHand(string connectionId)
+        {
 
             var totalPlayerHand = new List<int>();
 
             var cardArray = new List<Card>();
 
-            var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
+            var playerQuery = playerList.Where(x => x.connectionId == connectionId);
 
-            if (query.Any())
+            if (playerQuery.Any())
             {
-                foreach (var cih in query.FirstOrDefault().cards)
+                foreach (var cih in playerQuery.FirstOrDefault().cards)
                 {
                     totalPlayerHand.Add(cih);
                 }
@@ -302,7 +311,8 @@ namespace Poker
 
             var handResult = hand.EvaluateHand(cardArray.ToArray());
 
-            Clients.Caller.clientScore(handResult);
+            return handResult;
+
         }
 
         public void selectNewDealer()
@@ -389,10 +399,10 @@ namespace Poker
 
         public void PlayerStand()
         {
-            //TODO: Take care of a player leaving in the game
-            gameVars.handPhase = HandPhase.PreGame;
-            gameVars.handInProgress = false;
-            gameVars.cardsInPlay = new List<int>();
+            var otherPlayerQuery = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0);
+
+            playerWinner(otherPlayerQuery);
+            restartGamePlayerLeft();
 
             var query = playerList.Where(x => x.connectionId == Context.ConnectionId);
 
@@ -503,16 +513,8 @@ namespace Poker
 
                 if (playerQuery.FirstOrDefault().tableSeat > 0)
                 {
-                    //TODO: Take care of a player leaving in the game
-                    gameVars.handPhase = HandPhase.PreGame;
-                    gameVars.handInProgress = false;
-                    gameVars.currentAmountToCall = 0;
-                    gameVars.currentRaise = 0;
-                    gameVars.smallBlind = "";
-                    gameVars.currentPot = 0;
-                    gameVars.gameReady = false;
-                    gameVars.playerTurn = "";
-                    gameVars.cardsInPlay = new List<int>();
+                    playerWinner(playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat >  0));
+                    restartGamePlayerLeft();
                 }
                 
                 Clients.All.clientMessage(playerQuery.FirstOrDefault().name + " has left.");
@@ -524,6 +526,60 @@ namespace Poker
             return base.OnDisconnected(stopCalled);
         }
 
+        public void restartGamePlayerLeft()
+        {
+            gameVars.cardsInPlay = new List<int>();
+            gameVars.currentAmountToCall = 0;
+            gameVars.currentPot = 0;
+            gameVars.currentRaise = 0;
+            gameVars.gameReady = false;
+            gameVars.handInProgress = false;
+            gameVars.handPhase = HandPhase.PreGame;
+            gameVars.playerTurn = "";
+            gameVars.smallBlind = "";
+
+            foreach (var player in playerList)
+            {
+                player.allin = false;
+                player.called = false;
+                player.cards = new List<int>();
+                player.cardsRevealed = false;
+                player.folded = false;
+                player.raised = false;
+                player.tableSeat = 0;
+                player.ready = false;
+            }
+        }
+
+        public void restartGameHandEnded()
+        {
+            gameVars.cardsInPlay = new List<int>();
+            gameVars.currentAmountToCall = 0;
+            gameVars.currentPot = 0;
+            gameVars.currentRaise = 0;
+            gameVars.handInProgress = false;
+            gameVars.handPhase = HandPhase.PreGame;
+            gameVars.playerTurn = "";
+            gameVars.smallBlind = "";
+
+            foreach (var player in playerList)
+            {
+                player.allin = false;
+                player.called = false;
+                player.cards = new List<int>();
+                player.cardsRevealed = false;
+                player.folded = false;
+                player.raised = false;
+            }
+        }
+
+        public void playerWinner(IEnumerable<Player> player)
+        {
+            if (player.FirstOrDefault() != null)
+            {
+                player.FirstOrDefault().chips = player.FirstOrDefault().chips + gameVars.currentPot;
+            }
+        }
     }
 
     public class Player
@@ -582,7 +638,8 @@ namespace Poker
         Turn = 5,
         RiverBet = 6,
         River = 7,
-        FinalBet = 8
+        FinalBet = 8,
+        Victory = 9
 
     }
     

@@ -114,7 +114,7 @@ $("#bet5").click(function () {
     betAmount = currentAmountToCall + 5;
     if (betAmount > playerChips) {
         //Not a valid amount
-        bootbox.alert("Not enough chips.")
+        bootbox.alert("Not enough chips.");
     }
     else {
         raise(betAmount);
@@ -127,7 +127,7 @@ $("#bet10").click(function () {
     betAmount = currentAmountToCall + 10;
     if (betAmount > playerChips) {
         //Not a valid amount
-        bootbox.alert("Not enough chips.")
+        bootbox.alert("Not enough chips.");
     }
     else {
         raise(betAmount);
@@ -146,7 +146,7 @@ $("#pass").click(function () {
     //pass the current round of betting
     //May only pass if current raise is 0
     if (currentAmountToCall > 0) {
-        bootbox.alert("Must call or raise to continue.")
+        bootbox.alert("Must call or raise to continue.");
     }
     else {
         call(0);

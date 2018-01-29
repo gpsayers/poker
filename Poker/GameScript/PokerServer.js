@@ -42,8 +42,10 @@ pokerHub.client.clientPhase = function (phase) {
 }
 
 pokerHub.client.clientScore = function (score) {
-    handScore = score;
-    console.log("Player score: " + handScore);
+    winningPlayer = score;
+    console.log("Player " + winningPlayer + " wins!");
+    //handScore = score;
+    //console.log("Player score: " + handScore);
 
 }
 

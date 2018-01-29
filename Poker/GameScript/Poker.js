@@ -101,7 +101,8 @@ var playerList,
     bigBlind = 10,
     currentRaise = 0,
     currentAmountToCall = 0,
-    smallBlindPlayer = "";
+    smallBlindPlayer = "",
+    winningPlayer = "";
 
 
 
@@ -137,12 +138,7 @@ function gameLoop() {
         updatePokerTable();
 
         if (handPhase == 0) {
-            flopCardArray.length = 0;
-            handCardArray.length = 0;
-            oppCardsArray.length = 0;
-            showhand = false;
-            showflop = false;
-            showopp = false;
+            newHand();
         }
         
 
@@ -516,7 +512,6 @@ function displayPlayerArea() {
     if (gamePlayerTurn != currentPlayer) {
         $("#bet").prop("disabled", true);
         $("#fold").prop("disabled", true);
-        $("#stand").prop("disabled", true);
         $("#bet5").prop("disabled", true);
         $("#bet10").prop("disabled", true);
         $("#pass").prop("disabled", true);
@@ -524,7 +519,6 @@ function displayPlayerArea() {
     } else {
         $("#bet").prop("disabled", false);
         $("#fold").prop("disabled", false);
-        $("#stand").prop("disabled", false);
         $("#bet5").prop("disabled", false);
         $("#bet10").prop("disabled", false);
         $("#pass").prop("disabled", false);
@@ -612,6 +606,34 @@ function displayOpponentArea() {
         context.drawImage(imgOppCard1, 25, 25, 100, 144);
         context.drawImage(imgOppCard2, 140, 25, 100, 144);
     }
+}
+
+function newHand() {
+
+    flopCardArray.length = 0;
+    handCardArray.length = 0;
+    oppCardsArray.length = 0;
+    oppRevealCards = false;
+    oppAllIn = false;
+    oppCalled = false;
+    oppFolded = false;
+    oppRaised = false;
+    showhand = false;
+    showflop = false;
+    showopp = false;
+    handPhase = 0;
+    currentPot = 0;
+    betAmount = 0;
+    gameHandInProgress = false;
+    gameDealer = "";
+    gamePlayerTurn = "";
+    gameCurrentRaise = 0;
+    countDownVal = 0;
+    countDownOn = false;
+    currentRaise = 0;
+    currentAmountToCall = 0;
+    smallBlindPlayer = "";
+    winningPlayer = "";
 }
 
 loadPokerTable();
