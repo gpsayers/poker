@@ -103,6 +103,7 @@ $("#bet").click(function () {
         bootbox.alert("Not enough chips.")
     }
     else {
+        raise(betAmount);
         playerChips = playerChips - betAmount;
         currentPot = parseInt(currentPot) + parseInt(betAmount);
     }
@@ -110,24 +111,26 @@ $("#bet").click(function () {
 });
 
 $("#bet5").click(function () {
-    betAmount = 5;
+    betAmount = currentAmountToCall + 5;
     if (betAmount > playerChips) {
         //Not a valid amount
         bootbox.alert("Not enough chips.")
     }
     else {
+        raise(betAmount);
         playerChips = playerChips - betAmount;
         currentPot = parseInt(currentPot) + parseInt(betAmount);
     }
 });
 
 $("#bet10").click(function () {
-    betAmount = 10;
+    betAmount = currentAmountToCall + 10;
     if (betAmount > playerChips) {
         //Not a valid amount
         bootbox.alert("Not enough chips.")
     }
     else {
+        raise(betAmount);
         playerChips = playerChips - betAmount;
         currentPot = parseInt(currentPot) + parseInt(betAmount);
     }
@@ -135,13 +138,34 @@ $("#bet10").click(function () {
 
 $("#fold").click(function () {
     //fold the hand
+    fold();
+
 });
 
 $("#pass").click(function () {
     //pass the current round of betting
     //May only pass if current raise is 0
+    if (currentAmountToCall > 0) {
+        bootbox.alert("Must call or raise to continue.")
+    }
+    else {
+        call(0);
+        if (oppCalled == true || oppRaised == true) {
+            nextPhase();
+        }
+    }
+
 });
 
 $("#call").click(function () {
-    //pass the current round of betting
+    if (playerChips < currentAmountToCall) {
+        //all in
+        call(playerChips);
+    }
+    else {
+        call(currentAmountToCall);
+    }
+    if (oppCalled == true || oppRaised == true) {
+        nextPhase();
+    }
 });

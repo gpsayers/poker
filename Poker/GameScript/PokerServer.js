@@ -21,6 +21,7 @@ pokerHub.client.clientHand = function (cards) {
 
 pokerHub.client.clientFlop = function (cards) {
     flopCardArray = cards;
+    showflop = true;
     loadFlop();
 }
 
@@ -72,7 +73,7 @@ pokerHub.client.gameInfo = function (info) {
         oppFolded = opp[0].folded;
         oppRaised = opp[0].raised;
     }
-
+    playerChips = info.player.chips;
 
 }
 
@@ -190,5 +191,35 @@ function playerReady(ready) {
 function getGameInfo() {
     $.connection.hub.start().done(function () {
         pokerHub.server.getGameInfo();
+    });
+}
+
+function playBlinds(small, big) {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.playBlinds(small, big);
+    });
+}
+
+function raise(amount) {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.raise(amount);
+    });
+}
+
+function call(amount) {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.call(amount);
+    });
+}
+
+function fold() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.fold();
+    });
+}
+
+function nextPhase() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.nextPhase();
     });
 }

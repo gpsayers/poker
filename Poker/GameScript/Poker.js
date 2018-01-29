@@ -144,8 +144,7 @@ function gameLoop() {
             showflop = false;
             showopp = false;
         }
-
-
+        
 
         if (gameReady == true && gameHandInProgress == false && countDownOn == false) {
             //Start countdown
@@ -158,14 +157,14 @@ function gameLoop() {
             gameHandInProgress = true;
             countDownOn = false;
             dealCards();
-            getPhase();
+            playBlinds(smallBlind, bigBlind);
+            getGameInfo();
             console.log("Start hand");
         }
 
         if ((cycles % 60) == 0) {
             getSeats();
             showOppCards();
-            //getPhase();
             getGameInfo();
 
             if (countDownOn == true && countDownVal > 0) {
@@ -231,6 +230,7 @@ function loadPokerTable() {
     $("#reveal").hide();
     $("#stand").hide();
     $("#pass").hide();
+    $("#call").hide();
 }
 
 function updatePokerTable() {
@@ -480,17 +480,23 @@ function displayPlayerArea() {
 
     var chipsText = playerChips;
     context.fillText(chipsText, 705 - context.measureText(chipsText).width, 545);
-
     context.fillText("Pot: " + currentPot, 275, 410);
-
     context.closePath();
 
     if (gamePlayerTurn == currentPlayer) {
         context.beginPath();
         context.strokeStyle = "#FF0000";
-        context.rect(267, 380, 448, 172);
+        context.rect(267, 380, 446, 172);
         context.stroke();
         context.strokeStyle = "black";
+        context.closePath();
+    }
+
+    if (gamePlayerTurn == currentPlayer) {
+        context.beginPath();
+        context.fillStyle = "black";
+        context.font = "30px Arial";
+        context.fillText("Awaiting Action", 275, 545);
         context.closePath();
     }
 
@@ -501,11 +507,30 @@ function displayPlayerArea() {
     $("#check").show();
     $("#reveal").show();
     $("#stand").show();
-        $("#bet5").show();
+    $("#bet5").show();
     $("#bet10").show();
     $("#betval").show();
-    $("#fold").show();
     $("#pass").show();
+    $("#call").show();
+
+    if (gamePlayerTurn != currentPlayer) {
+        $("#bet").prop("disabled", true);
+        $("#fold").prop("disabled", true);
+        $("#stand").prop("disabled", true);
+        $("#bet5").prop("disabled", true);
+        $("#bet10").prop("disabled", true);
+        $("#pass").prop("disabled", true);
+        $("#call").prop("disabled", true);
+    } else {
+        $("#bet").prop("disabled", false);
+        $("#fold").prop("disabled", false);
+        $("#stand").prop("disabled", false);
+        $("#bet5").prop("disabled", false);
+        $("#bet10").prop("disabled", false);
+        $("#pass").prop("disabled", false);
+        $("#call").prop("disabled", false);
+    }
+
 
     if (showhand == true) {
         context.drawImage(imgPlayerCard1, 25, 393, 100, 144);
