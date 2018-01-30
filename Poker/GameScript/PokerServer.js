@@ -54,7 +54,7 @@ pokerHub.client.clientScore = function (connId) {
 }
 
 pokerHub.client.gameInfo = function (info) {
-    console.log(info.handPhase);
+    console.log(info);
     var gameInfo = info;
     var opp = info.opponent;
     handPhase = gameInfo.handPhase;

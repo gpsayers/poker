@@ -256,6 +256,15 @@ function updatePokerTable() {
         context.closePath();
     }
 
+    if (winningPlayer != null && winningPlayer != "") {
+        context.beginPath();
+        context.fillStyle = "gold";
+        context.font = "40px Arial";
+        context.fillText(winningPlayer + " wins!", 290, 290);
+        context.closePath();
+
+    }
+
     if (showflop) {
         context.drawImage(imgFlopCard1, 140, 209, 100, 144);
         context.drawImage(imgFlopCard2, 255, 209, 100, 144);
@@ -595,7 +604,58 @@ function displayOpponentArea() {
         context.stroke();
         context.strokeStyle = "black";
         context.closePath();
+
+        context.beginPath();
+        context.fillStyle = "red";
+        context.font = "25px Arial";
+        context.fillText("Making choices...", 275, 105);
+        context.closePath();
     }
+    else {
+        var message = "";
+        if (handPhase == 2) {
+            //player is blind
+            if (smallBlindPlayer == otherPlayer) {
+                message = "Small blind: " + smallBlind;
+            }
+            else {
+                message = "Big blind: " + bigBlind;
+            }
+
+        }
+
+        if (handPhase == 4 || handPhase == 6 || handPhase == 8) {
+            message = currentPlayer + " is first to act.";
+        }
+
+        if (oppRaised) {
+            //otherPlayer raised X
+            message = otherPlayer + " raised you " + gameCurrentRaise;
+        }
+
+        if (oppCalled) {
+            message = otherPlayer + " called.";
+        }
+
+        if (oppFolded) {
+            //otherPlayer folded
+            message = otherPlayer + " folded.";
+        }
+
+        if (oppAllIn) {
+            message = otherPlayer + " is all in!";
+        }
+
+
+
+        context.beginPath();
+        context.fillStyle = "black";
+        context.font = "25px Arial";
+        context.fillText(message, 272, 177);
+        context.closePath();
+    }
+
+
 
 
     if (showopp == true && handPhase > 0) {

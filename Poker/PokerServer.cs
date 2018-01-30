@@ -481,6 +481,7 @@ namespace Poker
                         gameVars.currentRaise,
                         gameVars.currentAmountToCall,
                         gameVars.smallBlind,
+                        gameVars.playerWinner,
                         opponent,
                         player
                     };
@@ -498,6 +499,11 @@ namespace Poker
                         gameVars.gameReady,
                         gameVars.handInProgress,
                         gameVars.handPhase,
+                        gameVars.playerTurn,
+                        gameVars.currentRaise,
+                        gameVars.currentAmountToCall,
+                        gameVars.smallBlind,
+                        gameVars.playerWinner,
                         player
                     };
 
