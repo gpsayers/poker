@@ -21,7 +21,6 @@ pokerHub.client.clientHand = function (cards) {
 
 pokerHub.client.clientFlop = function (cards) {
     flopCardArray = cards;
-    showflop = true;
     loadFlop();
 }
 
