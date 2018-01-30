@@ -41,11 +41,13 @@ pokerHub.client.clientPhase = function (phase) {
     
 }
 
-pokerHub.client.clientScore = function (connId) {
+pokerHub.client.clientScore = function (winnerName) {
     newHand();
     nextPhase();
     //handScore = score;
     //console.log("Player score: " + handScore);
+    winningPlayer = winnerName;
+    showWinner = true;
     if (gameReady == true) {
         //Start countdown
         countDownOn = true;

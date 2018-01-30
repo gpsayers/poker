@@ -284,7 +284,7 @@ namespace Poker
             playerWinner(playerList.Where(x => x.connectionId == playerTuple[0].Item1));
 
             //Return the winners name
-            Clients.Caller.clientScore(playerTuple[0].Item1);
+            Clients.Caller.clientScore(gameVars.playerWinner);
         }
 
         public decimal evaluateHand(string connectionId)

@@ -46,6 +46,7 @@ function isIntersect(point, circle) {
 
 
 $("#stand").click(function () {
+    disableButtons(true);
     playerStand();
     getSeats();
 });
@@ -100,9 +101,10 @@ $("#bet").click(function () {
     betAmount = $("#betval").val();
     if (parseInt(betAmount) > playerChips) {
         //Not a valid amount
-        bootbox.alert("Not enough chips.")
+        bootbox.alert("Not enough chips.");
     }
     else {
+        disableButtons(true);
         raise(betAmount);
         playerChips = playerChips - betAmount;
         currentPot = parseInt(currentPot) + parseInt(betAmount);
@@ -117,6 +119,7 @@ $("#bet5").click(function () {
         bootbox.alert("Not enough chips.");
     }
     else {
+        disableButtons(true);
         raise(betAmount);
         playerChips = playerChips - betAmount;
         currentPot = parseInt(currentPot) + parseInt(betAmount);
@@ -130,6 +133,7 @@ $("#bet10").click(function () {
         bootbox.alert("Not enough chips.");
     }
     else {
+        disableButtons(true);
         raise(betAmount);
         playerChips = playerChips - betAmount;
         currentPot = parseInt(currentPot) + parseInt(betAmount);
@@ -149,6 +153,7 @@ $("#pass").click(function () {
         bootbox.alert("Must call or raise to continue.");
     }
     else {
+        disableButtons(true);
         call(0);
         if (oppCalled == true || oppRaised == true) {
             nextPhase();
@@ -160,9 +165,11 @@ $("#pass").click(function () {
 $("#call").click(function () {
     if (playerChips < currentAmountToCall) {
         //all in
+        disableButtons(true);
         call(playerChips);
     }
     else {
+        disableButtons(true);
         call(currentAmountToCall);
     }
     if (oppCalled == true || oppRaised == true) {

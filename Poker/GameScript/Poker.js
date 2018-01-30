@@ -102,7 +102,9 @@ var playerList,
     currentRaise = 0,
     currentAmountToCall = 0,
     smallBlindPlayer = "",
-    winningPlayer = "";
+    winningPlayer = "",
+    delayCountdown = 0,
+    showWinner = false;
 
 
 
@@ -135,34 +137,45 @@ function gameLoop() {
 
         lastTime = currentTime - (delta % interval);
 
-        updatePokerTable();
-       
+        if (delayCountdown == 0) {
+            updatePokerTable();
 
-        if (gameReady == true && gameHandInProgress == false && countDownOn == false) {
-            //Start countdown
-            countDownOn = true;
-            countDownVal = 3;
-        }
 
-        if (countDownOn == true && countDownVal == 0)
-        {
-            gameHandInProgress = true;
-            countDownOn = false;
-            dealCards();
-            playBlinds(smallBlind, bigBlind);
-            getGameInfo();
-            console.log("Start hand");
-        }
+            if (gameReady == true && gameHandInProgress == false && countDownOn == false) {
+                //Start countdown
+                countDownOn = true;
+                countDownVal = 3;
+            }
 
-        if ((cycles % 60) == 0) {
-            getSeats();
-            showOppCards();
-            getGameInfo();
+            if (countDownOn == true && countDownVal == 0) {
+                //Countdown complete
+                gameHandInProgress = true;
+                countDownOn = false;
+                dealCards();
+                playBlinds(smallBlind, bigBlind);
+                getGameInfo();
+                console.log("Start hand");
+            }
 
-            if (countDownOn == true && countDownVal > 0) {
-                countDownVal--;
+            if ((cycles % 60) == 0) {
+                //Every second do this
+                getSeats();
+                showOppCards();
+                getGameInfo();
+
+                if (countDownOn == true && countDownVal > 0) {
+                    countDownVal--;
+                }
+            }
+        } else {
+
+            if ((cycles % 60) == 0) {
+                delayCountdown--;
             }
         }
+
+
+
 
     }
 
@@ -248,22 +261,29 @@ function updatePokerTable() {
     context.drawImage(imgDeck, 23, 207, 100, 144);
     context.drawImage(imgDeck, 21, 205, 100, 144);
 
-    if (countDownVal > 0) {
-        context.beginPath();
-        context.fillStyle = "black";
-        context.font = "30px Arial";
-        context.fillText("Game start in..... " + countDownVal, 290, 290);
-        context.closePath();
-    }
 
-    if (winningPlayer != null && winningPlayer != "") {
+
+    if (showWinner) {
+        showWinner = false;
+
         context.beginPath();
         context.fillStyle = "gold";
         context.font = "40px Arial";
         context.fillText(winningPlayer + " wins!", 290, 290);
         context.closePath();
 
+        delayCountdown = 3;
+    } else {
+        if (countDownVal > 0) {
+            context.beginPath();
+            context.fillStyle = "black";
+            context.font = "30px Arial";
+            context.fillText("Game start in..... " + countDownVal, 290, 290);
+            context.closePath();
+        }
     }
+
+
 
     if (showflop) {
         context.drawImage(imgFlopCard1, 140, 209, 100, 144);
@@ -430,6 +450,15 @@ function loadOpps() {
     showopp = true;
 }
 
+function disableButtons(disableFlag) {
+    $("#bet").prop("disabled", disableFlag);
+    $("#fold").prop("disabled", disableFlag);
+    $("#bet5").prop("disabled", disableFlag);
+    $("#bet10").prop("disabled", disableFlag);
+    $("#pass").prop("disabled", disableFlag);
+    $("#call").prop("disabled", disableFlag);
+}
+
 function displayPlayerArea() {
     context.beginPath();
     context.fillStyle = "black";
@@ -439,7 +468,6 @@ function displayPlayerArea() {
     if (gameDealer == currentPlayer) {
         context.drawImage(imgDealer, 485, 385, 50, 50);
     }
-
         
     var chipCalc = playerChips,
         chip1 = 0,
@@ -485,19 +513,19 @@ function displayPlayerArea() {
     context.closePath();
 
     if (gamePlayerTurn == currentPlayer) {
+        $("#call").val("Call " + currentAmountToCall);
+
         context.beginPath();
         context.strokeStyle = "#FF0000";
         context.rect(267, 380, 446, 172);
         context.stroke();
         context.strokeStyle = "black";
         context.closePath();
-    }
 
-    if (gamePlayerTurn == currentPlayer) {
         context.beginPath();
-        context.fillStyle = "black";
+        context.fillStyle = "red";
         context.font = "30px Arial";
-        context.fillText("Awaiting Action", 275, 545);
+        context.fillText("Waiting for action...", 275, 485);
         context.closePath();
     }
 
@@ -515,19 +543,9 @@ function displayPlayerArea() {
     $("#call").show();
 
     if (gamePlayerTurn != currentPlayer) {
-        $("#bet").prop("disabled", true);
-        $("#fold").prop("disabled", true);
-        $("#bet5").prop("disabled", true);
-        $("#bet10").prop("disabled", true);
-        $("#pass").prop("disabled", true);
-        $("#call").prop("disabled", true);
+        disableButtons(true);
     } else {
-        $("#bet").prop("disabled", false);
-        $("#fold").prop("disabled", false);
-        $("#bet5").prop("disabled", false);
-        $("#bet10").prop("disabled", false);
-        $("#pass").prop("disabled", false);
-        $("#call").prop("disabled", false);
+        disableButtons(false);
     }
 
 
@@ -598,6 +616,8 @@ function displayOpponentArea() {
     context.fillText(chipsText, 705 - context.measureText(chipsText).width, 177);
 
     if (gamePlayerTurn == otherPlayer) {
+        $("#call").val("Call");
+
         context.beginPath();
         context.strokeStyle = "#FF0000";
         context.rect(267, 12, 446, 170);
@@ -614,18 +634,17 @@ function displayOpponentArea() {
     else {
         var message = "";
         if (handPhase == 2) {
-            //player is blind
+            //player blind
             if (smallBlindPlayer == otherPlayer) {
                 message = "Small blind: " + smallBlind;
             }
             else {
                 message = "Big blind: " + bigBlind;
             }
-
         }
 
         if (handPhase == 4 || handPhase == 6 || handPhase == 8) {
-            message = currentPlayer + " is first to act.";
+            message = currentPlayer + " is first this round.";
         }
 
         if (oppRaised) {
@@ -646,17 +665,13 @@ function displayOpponentArea() {
             message = otherPlayer + " is all in!";
         }
 
-
-
         context.beginPath();
         context.fillStyle = "black";
         context.font = "25px Arial";
         context.fillText(message, 272, 177);
         context.closePath();
     }
-
-
-
+    
 
     if (showopp == true && handPhase > 0) {
         context.drawImage(imgOppCard1, 25, 25, 100, 144);
