@@ -136,11 +136,7 @@ function gameLoop() {
         lastTime = currentTime - (delta % interval);
 
         updatePokerTable();
-
-        if (handPhase == 0) {
-            newHand();
-        }
-        
+       
 
         if (gameReady == true && gameHandInProgress == false && countDownOn == false) {
             //Start countdown
@@ -266,20 +262,20 @@ function updatePokerTable() {
         context.drawImage(imgFlopCard3, 370, 209, 100, 144);
     }
 
-    if (handPhase > 4) {
+    if (handPhase > 4 && showflop == true) {
         context.drawImage(imgFlopCard4, 485, 209, 100, 144);
     }
 
-    if (handPhase > 6) {
+    if (handPhase > 6 && showflop == true) {
         context.drawImage(imgFlopCard5, 600, 209, 100, 144);
     }
 
-    if (handPhase > 7) {
-        context.beginPath();
-        context.fillStyle = "black";
-        context.font = "30px Arial";
-        context.fillText(handScore, 500, 410);
-        context.closePath();
+    if (handPhase > 8) {
+        //context.beginPath();
+        //context.fillStyle = "black";
+        //context.font = "30px Arial";
+        //context.fillText(handScore, 500, 410);
+        //context.closePath();
     }
 
     var playerString = "";
@@ -625,7 +621,6 @@ function newHand() {
     currentPot = 0;
     betAmount = 0;
     gameHandInProgress = false;
-    gameDealer = "";
     gamePlayerTurn = "";
     gameCurrentRaise = 0;
     countDownVal = 0;
@@ -634,6 +629,8 @@ function newHand() {
     currentAmountToCall = 0;
     smallBlindPlayer = "";
     winningPlayer = "";
+    showflop = false;
+
 }
 
 loadPokerTable();

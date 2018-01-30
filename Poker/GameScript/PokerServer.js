@@ -41,16 +41,20 @@ pokerHub.client.clientPhase = function (phase) {
     
 }
 
-pokerHub.client.clientScore = function (score) {
-    winningPlayer = score;
-    console.log("Player " + winningPlayer + " wins!");
+pokerHub.client.clientScore = function (connId) {
+    newHand();
+    nextPhase();
     //handScore = score;
     //console.log("Player score: " + handScore);
-
+    if (gameReady == true) {
+        //Start countdown
+        countDownOn = true;
+        countDownVal = 3;
+    }
 }
 
 pokerHub.client.gameInfo = function (info) {
-    console.log(info);
+    console.log(info.handPhase);
     var gameInfo = info;
     var opp = info.opponent;
     handPhase = gameInfo.handPhase;
@@ -63,7 +67,8 @@ pokerHub.client.gameInfo = function (info) {
     gamePlayerTurn = gameInfo.playerTurn;
     currentRaise = gameInfo.currentRaise;
     currentAmountToCall = gameInfo.currentAmountToCall;
-    smallBlindPlayer = gameInfo.smallBlind
+    smallBlindPlayer = gameInfo.smallBlind;
+    winningPlayer = gameInfo.playerWinner;
     if (opp != null) {
         oppChips = opp[0].chips;
         oppReady = opp[0].ready;

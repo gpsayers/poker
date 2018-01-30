@@ -47,6 +47,7 @@ namespace Poker
             gameVars.currentPot = 0;
             gameVars.playerTurn = gameVars.dealer;
             gameVars.smallBlind = gameVars.dealer;
+            gameVars.playerWinner = "";
 
             gameVars.currentPlayers = playersInHand.Select(x => x.connectionId).ToList();
 
@@ -141,6 +142,10 @@ namespace Poker
                     getRiver();
                     break;
                 case HandPhase.FinalBet:
+                    foreach(var player in playerList)
+                    {
+                        player.cardsRevealed = true;
+                    }
                     checkHand();
                     break;
                 case HandPhase.Victory:
@@ -275,6 +280,8 @@ namespace Poker
             playerTuple.Sort((x,y) => -1 * x.Item2.CompareTo(y.Item2));
 
             gameVars.handPhase = HandPhase.Victory;
+
+            playerWinner(playerList.Where(x => x.connectionId == playerTuple[0].Item1));
 
             //Return the winners name
             Clients.Caller.clientScore(playerTuple[0].Item1);
@@ -578,6 +585,7 @@ namespace Poker
             if (player.FirstOrDefault() != null)
             {
                 player.FirstOrDefault().chips = player.FirstOrDefault().chips + gameVars.currentPot;
+                gameVars.playerWinner = player.FirstOrDefault().name;
             }
         }
     }
@@ -625,6 +633,7 @@ namespace Poker
         public int currentAmountToCall { get; set; }
         public int currentRaise { get; set; }
         public string smallBlind { get; set; }
+        public string playerWinner { get; set; }
 
     }
 
