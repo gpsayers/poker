@@ -54,10 +54,27 @@ pokerHub.client.clientScore = function (winnerName) {
     }
 }
 
+pokerHub.client.playerInfo = function (playerInfo) {
+    playerChips = playerInfo.chips;
+}
+
+pokerHub.client.oppInfo = function (opp) {
+    if (opp != null) {
+        oppChips = opp.chips;
+        oppReady = opp.ready;
+        oppName = opp.name;
+        oppSeat = opp.tableSeat;
+        oppRevealCards = opp.cardsRevealed;
+        oppAllIn = opp.allin;
+        oppCalled = opp.called;
+        oppFolded = opp.folded;
+        oppRaised = opp.raised;
+    }
+}
+
 pokerHub.client.gameInfo = function (info) {
     console.log(info);
     var gameInfo = info;
-    var opp = info.opponent;
     handPhase = gameInfo.handPhase;
     flopCardArray = gameInfo.cardsInPlay;
     currentPot = gameInfo.currentPot;
@@ -70,19 +87,7 @@ pokerHub.client.gameInfo = function (info) {
     currentAmountToCall = gameInfo.currentAmountToCall;
     smallBlindPlayer = gameInfo.smallBlind;
     winningPlayer = gameInfo.playerWinner;
-    if (opp != null) {
-        oppChips = opp[0].chips;
-        oppReady = opp[0].ready;
-        oppName = opp[0].name;
-        oppSeat = opp[0].tableSeat;
-        oppRevealCards = opp[0].cardsRevealed;
-        oppAllIn = opp[0].allin;
-        oppCalled = opp[0].called;
-        oppFolded = opp[0].folded;
-        oppRaised = opp[0].raised;
-    }
-    playerChips = info.player.chips;
-
+    
 }
 
 pokerHub.client.chatMessage = function (chatMessage, name) {
@@ -230,4 +235,17 @@ function nextPhase() {
     $.connection.hub.start().done(function () {
         pokerHub.server.nextPhase();
     });
+}
+
+function getPlayerInfo() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getPlayerInfo();
+    });
+}
+
+function getOppInfo() {
+    $.connection.hub.start().done(function () {
+        pokerHub.server.getOppInfo();
+    });
+
 }

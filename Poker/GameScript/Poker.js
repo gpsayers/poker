@@ -162,7 +162,8 @@ function gameLoop() {
                 getSeats();
                 showOppCards();
                 getGameInfo();
-
+                getPlayerInfo();
+                getOppInfo();
                 if (countDownOn == true && countDownVal > 0) {
                     countDownVal--;
                 }

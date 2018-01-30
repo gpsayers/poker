@@ -88,33 +88,39 @@ namespace Poker
 
         public void playBlinds(int small, int big)
         {
-            var smallBlindQuery = playerList.Where(x => x.name == gameVars.smallBlind);
-
-            var bigBlindQuery = playerList.Where(x => x.tableSeat > 0 && x.name != gameVars.smallBlind);
-
-            if (smallBlindQuery.Any())
+            if (gameVars.blindsPlayed == false)
             {
-                var chps = smallBlindQuery.FirstOrDefault().chips;
+                gameVars.blindsPlayed = true;
 
-                smallBlindQuery.FirstOrDefault().chips = chps - small;
+                var smallBlindQuery = playerList.Where(x => x.name == gameVars.smallBlind);
 
-                gameVars.currentPot = gameVars.currentPot + small;
+                var bigBlindQuery = playerList.Where(x => x.tableSeat > 0 && x.name != gameVars.smallBlind);
 
+                if (smallBlindQuery.Any())
+                {
+                    var chps = smallBlindQuery.FirstOrDefault().chips;
+
+                    smallBlindQuery.FirstOrDefault().chips = chps - small;
+
+                    gameVars.currentPot = gameVars.currentPot + small;
+
+                }
+
+                if (bigBlindQuery.Any())
+                {
+                    var chps = bigBlindQuery.FirstOrDefault().chips;
+
+                    bigBlindQuery.FirstOrDefault().chips = chps - big;
+
+                    gameVars.currentPot = gameVars.currentPot + big;
+
+                    gameVars.currentRaise = big - small;
+
+                    gameVars.currentAmountToCall = big - small;
+
+                }
             }
 
-            if(bigBlindQuery.Any())
-            {
-                var chps = bigBlindQuery.FirstOrDefault().chips;
-
-                bigBlindQuery.FirstOrDefault().chips = chps - big;
-
-                gameVars.currentPot = gameVars.currentPot + big;
-
-                gameVars.currentRaise = big - small;
-
-                gameVars.currentAmountToCall = big - small;
-
-            }
         }
 
         public void nextPhase()
@@ -446,69 +452,40 @@ namespace Poker
 
         public void getGameInfo()
         {
-            var oppQuery = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0 );
 
+            var gameInfo = new
+            {
+                gameVars.cardsInPlay,
+                gameVars.currentPlayers,
+                gameVars.currentPot,
+                gameVars.dealer,
+                gameVars.gameReady,
+                gameVars.handInProgress,
+                gameVars.handPhase,
+                gameVars.playerTurn,
+                gameVars.currentRaise,
+                gameVars.currentAmountToCall,
+                gameVars.smallBlind,
+                gameVars.playerWinner,
+            };
+
+            Clients.Caller.gameInfo(gameInfo);
+        } 
+
+        public void getPlayerInfo()
+        {
             var player = playerList.Where(x => x.connectionId == Context.ConnectionId).FirstOrDefault();
 
-            if (player != null)
+            Clients.Caller.playerInfo(player);
+        }
+
+        public void getOppInfo()
+        {
+            var oppQuery = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0).FirstOrDefault();
+
+            if (oppQuery != null)
             {
-                if (oppQuery.Any())
-                {
-                    var opponent = from i in oppQuery
-                                   select new
-                                   {
-                                       i.chips,
-                                       i.cardsRevealed,
-                                       i.ready,
-                                       i.name,
-                                       i.tableSeat,
-                                       i.allin,
-                                       i.called,
-                                       i.folded,
-                                       i.raised
-                                   };
-
-                    var gameInfo = new
-                    {
-                        gameVars.cardsInPlay,
-                        gameVars.currentPlayers,
-                        gameVars.currentPot,
-                        gameVars.dealer,
-                        gameVars.gameReady,
-                        gameVars.handInProgress,
-                        gameVars.handPhase,
-                        gameVars.playerTurn,
-                        gameVars.currentRaise,
-                        gameVars.currentAmountToCall,
-                        gameVars.smallBlind,
-                        gameVars.playerWinner,
-                        opponent,
-                        player
-                    };
-
-                    Clients.All.gameInfo(gameInfo);
-                }
-                else
-                {
-                    var gameInfo = new
-                    {
-                        gameVars.cardsInPlay,
-                        gameVars.currentPlayers,
-                        gameVars.currentPot,
-                        gameVars.dealer,
-                        gameVars.gameReady,
-                        gameVars.handInProgress,
-                        gameVars.handPhase,
-                        gameVars.playerTurn,
-                        gameVars.currentRaise,
-                        gameVars.currentAmountToCall,
-                        gameVars.smallBlind,
-                        gameVars.playerWinner,
-                        player
-                    };
-
-                    Clients.All.gameInfo(gameInfo);
-                }
+                Clients.Caller.oppInfo(oppQuery);
             }
         }
 
@@ -550,6 +527,7 @@ namespace Poker
             gameVars.handPhase = HandPhase.PreGame;
             gameVars.playerTurn = "";
             gameVars.smallBlind = "";
+            gameVars.blindsPlayed = false;
 
             foreach (var player in playerList)
             {
@@ -574,6 +552,7 @@ namespace Poker
             gameVars.handPhase = HandPhase.PreGame;
             gameVars.playerTurn = "";
             gameVars.smallBlind = "";
+            gameVars.blindsPlayed = false;
 
             foreach (var player in playerList)
             {
@@ -625,6 +604,7 @@ namespace Poker
         {
             cardsInPlay = new List<int>();
             currentPlayers = new List<string>();
+            blindsPlayed = false;
         }
 
         public List<int> cardsInPlay { get; set; }
@@ -640,6 +620,7 @@ namespace Poker
         public int currentRaise { get; set; }
         public string smallBlind { get; set; }
         public string playerWinner { get; set; }
+        public bool blindsPlayed { get; set; }
 
     }
 
