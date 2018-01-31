@@ -56,6 +56,7 @@ pokerHub.client.clientScore = function (winnerName) {
 
 pokerHub.client.playerInfo = function (playerInfo) {
     playerChips = playerInfo.chips;
+    readyFlag = playerInfo.ready;
 }
 
 pokerHub.client.oppInfo = function (opp) {

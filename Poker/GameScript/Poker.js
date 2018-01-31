@@ -148,13 +148,21 @@ function gameLoop() {
             }
 
             if (countDownOn == true && countDownVal == 0) {
-                //Countdown complete
-                gameHandInProgress = true;
-                countDownOn = false;
-                dealCards();
-                playBlinds(smallBlind, bigBlind);
-                getGameInfo();
-                console.log("Start hand");
+
+                if (gameReady == true) {
+                    //Countdown complete
+                    gameHandInProgress = true;
+                    countDownOn = false;
+                    dealCards();
+                    playBlinds(smallBlind, bigBlind);
+                    getGameInfo();
+                    console.log("Start hand");
+                }
+                else {
+                    console.log("Game cancelled");
+                    newHand();
+                }
+
             }
 
             if ((cycles % 60) == 0) {
@@ -705,7 +713,7 @@ function newHand() {
     currentAmountToCall = 0;
     smallBlindPlayer = "";
     winningPlayer = "";
-    showflop = false;
+
 
 }
 

@@ -207,11 +207,14 @@ namespace Poker
 
                 var winner = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0);
 
+                gameVars.handPhase = HandPhase.Victory;
+
                 playerWinner(winner);
 
                 restartGameHandEnded();
 
-                selectNewDealer();
+                //Return the winners name
+                Clients.Caller.clientScore(gameVars.playerWinner);
             }
         }
 
@@ -337,9 +340,13 @@ namespace Poker
             if (currentDealer.Any())
             {
                 var index = playersInHand.ToList().IndexOf(currentDealer.FirstOrDefault());
-                if (index++ > playersInHand.Count() - 1)
+                if ((index+1) > playersInHand.Count() - 1)
                 {
                     gameVars.dealer = playersInHand.ToList()[0].name;
+                }
+                else
+                {
+                    gameVars.dealer = playersInHand.ToList()[index+1].name;
                 }
 
             }
@@ -414,6 +421,8 @@ namespace Poker
         {
             var otherPlayerQuery = playerList.Where(x => x.connectionId != Context.ConnectionId && x.tableSeat > 0);
 
+            gameVars.handPhase = HandPhase.Victory;
+
             playerWinner(otherPlayerQuery);
             restartGamePlayerLeft();
 
@@ -423,6 +432,9 @@ namespace Poker
             {
                 query.FirstOrDefault().tableSeat = 0;
             }
+
+            //Return the winners name
+            Clients.Caller.clientScore(gameVars.playerWinner);
         }
 
         public void PlayerReady(bool ready)
@@ -537,13 +549,14 @@ namespace Poker
                 player.cardsRevealed = false;
                 player.folded = false;
                 player.raised = false;
-                player.tableSeat = 0;
                 player.ready = false;
             }
         }
 
         public void restartGameHandEnded()
         {
+            selectNewDealer();
+
             gameVars.cardsInPlay = new List<int>();
             gameVars.currentAmountToCall = 0;
             gameVars.currentPot = 0;
