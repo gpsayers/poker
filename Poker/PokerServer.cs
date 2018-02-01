@@ -488,7 +488,12 @@ namespace Poker
         {
             var player = playerList.Where(x => x.connectionId == Context.ConnectionId).FirstOrDefault();
 
-            Clients.Caller.playerInfo(player);
+            if (player != null)
+            {
+                Clients.Caller.playerInfo(player);
+            }
+
+
         }
 
         public void getOppInfo()
